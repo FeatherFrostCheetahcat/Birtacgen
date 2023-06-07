@@ -1568,5 +1568,58 @@
         "history_text": {
             "scar": "r_c was scarred by a maned wolf, fighting over food."
         }
+  {
+    "patrol_id": "pln_hunt_BIGFOX4",
+    "biome": "plains",
+    "season": "Any",
+    "tags": [
+      "hunting",
+      "small_prey",
+      "warrior",
+      "p_l_to_r_c",
+      "rel_patrol",
+      "dislike",
+      "big_bite_injury",
+      "scar",
+      "THREE",
+      "injury",
+      "shock"
+    ],
+    "intro_text": "This is just one of the weirdest things they've ever seen, r_c comments to p_l, as the patrol stares at c_n's uninvited guest to their hunting grounds. Are they going to do anything about that... thing?",
+    "decline_text": "Well, they don't really have time to linger - they'll try another hunting place.",
+    "chance_of_success": 10,
+    "exp": 30,
+    "success_text": {
+      "unscathed_common": "Looking out over their full six cat patrol, p_l decides it's worth it. The cats fall into battle, decending onto the maned wolf and battering it, using teamwork to pull at its long legs and fox tail, as the wolf turns in skipping circles, yelping. It flees before them, leaving the triumphant cats with a single mouse for all that effort. Great.",
+      "unscathed_rare": "With a sigh, p_l recognises that having a maned wolf poaching from c_n's hunting grounds will become a problem pretty quickly. Their six cat patrol might be the best way to solve the problem before it begins. All the cats, tense and ready, wait to ambush the wolf as it hunts, and manage to drive it out of the territory before it manages to catch more than a mouse. The stolen mouse is returned to c_n's fresh-kill pile, where it belongs.",
+      "stat_skill": "While they'd hardly expected to need their skills on a hunting patrol, s_c is able to set up an excellent battle plan. It's only halfway through ambushing the beast that the patrol realises its a maned wolf, which makes their job inifinitely easier, as they drive away the timid predator from c_n territory with enough time left over to bring a mouse or two back for the fresh-kill pile before sundown."
+    },
+    "fail_text": {
+      "unscathed_common": "Looking out over their full six cat patrol, p_l decides it's worth it. The cats fall into battle, decending onto the maned wolf and battering it, using teamwork to pull at its long legs and fox tail, as the wolf turns in skipping circles, yelping. It flees before them, leaving the triumphant cats with... a fruit? All that effort for a sodding useless fruit?!",
+      "unscathed_stat": "With a full patrol, it's possible to take on something the size of a maned wolf, especially when it has the bravery of a deer fawn - but not when s_c attacks with so little forethought, not when the rest of the patrol has to come save their tail. They retreat, as the inceased maned wolf snarls and the rest of the patrol tries not to do the same at s_c.",
+      "injury": "Looking out over their full six cat patrol, p_l decides it's worth it. The cats fall into battle, decending onto the maned wolf and battering it, but a kick from a flailing long leg sends cats flying, and the wolf manages to whirl to sink its teeth into r_c.",
+      "stat_injury": "With a full patrol, it's possible to take on something the size of a maned wolf, especially when it has the bravery of a deer fawn - but not when s_c attacks with so little forethought, not when the rest of the patrol has to come save their tail. s_c gets grabbed by those dangerous jaws, and while the patrol is able to mob the wolf until it lets them go, its a serious wound."
+    },
+    "win_skills": [
+      "CLEVER,1",
+      "FIGHTER,1"
+    ],
+    "fail_trait": [
+      "adventurous",
+      "bold",
+      "confident",
+      "daring",
+      "playful",
+      "ambitious",
+      "fierce",
+      "shameless"
+    ],
+    "min_cats": 6,
+    "max_cats": 6,
+    "antagonize_text": null,
+    "antagonize_fail_text": null,
+    "history_text": {
+      "scar": "r_c was scarred by a maned wolf, fighting over food."
     }
+  },
 ]

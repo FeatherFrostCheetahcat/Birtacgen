@@ -217,18 +217,12 @@
 	},
 	"pregnancy": {
 		"birth_cooldown": 6,
-		"primary_chance_mated": 80,
 		"primary_chance_unmated": 130,
 		"random_affair_chance": 50,
 		"unmated_random_affair_chance": 10,
 		"one_kit_possibility": {"young adult": 8, "adult": 9, "senior adult": 10, "senior": 4},
         "two_kit_possibility": {"young adult": 10, "adult": 13, "senior adult": 15, "senior": 3},
-        "three_kit_possibility": {"young adult": 17, "adult": 15, "senior adult": 5, "senior": 1},
-        "four_kit_possibility": {"young adult": 12, "adult": 8, "senior adult": 2, "senior": 0},
-        "five_kit_possibility": {"young adult": 6, "adult": 2, "senior adult": 0, "senior": 0},
-        "max_kit_possibility": {"young adult": 2, "adult": 0, "senior adult": 0, "senior": 0},
 		"min_kits": 1,
-		"max_kits": 6,
 		"comment": [
 			"primary mated - 1/chance for kits, relationship and other factors will influence this chance",
 			"primary unmated - 1/chance for kits, relationship and other factors will influence this chance",
@@ -284,12 +278,7 @@
 	},
 	"cat_ages": {
 		"newborn": [0, 0],
-		"kitten": [1, 5],
-		"adolescent": [6, 11],
 		"young adult": [12, 47],
-        "adult": [48, 95],
-        "senior adult": [96, 119],
-        "senior": [120, 300],
 		"comment": [
 			"These HAVE to be in the correct order: where one ends, the next one begins on the next number.",
 			"If you DON'T DO THIS, your game WILL break."
@@ -314,8 +303,6 @@
 		]
 	},
 	"death_related": {
-		"leader_death_chance": 125,
-		"old_age_death_start": 150,
 		"old_age_death_chance": 51,
 		"classic_death_chance": 500,
 		"expanded_death_chance": 350,
@@ -323,7 +310,6 @@
 		"war_death_modifier_leader": 95,
 		"war_death_modifier": 250,
 		"base_random_murder_chance": 30,
-		"base_murder_kill_chance": 170
 	},
 	"condition_related": {
 		"expanded_illness_chance": 250,
@@ -335,23 +321,19 @@
 		"war_injury_modifier": 100
 	},
 	"clan_creation": {
-		"rerolls": 3,
 		"comment": "Set this to -1 for it to be infinite"
 	},
 	"graduation": {
 		"base_app_timeskip_ex": [[3, 12],[5, 6]],
 		"base_med_app_timeskip_ex": [[2, 7],[2, 3]],
 		"max_apprentice_age": {
-			"medicine cat apprentice": 30,
-			"apprentice": 25,
-			"mediator apprentice": 25
 		},
-		"min_graduating_age": 10
 	},
 	"save_load": {
 		"load_integrity_checks": true
 	},
 	"fun": {
+
 		"april_fools": false,
 		"all_cats_are_newborn": false,
 		"newborns_can_roam": false,
