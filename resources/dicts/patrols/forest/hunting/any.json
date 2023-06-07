@@ -1857,32 +1857,6 @@
         "min_cats": 2,
         "max_cats": 3
     },
-    {
-        "patrol_id": "fst_hunt_vole1",
-        "biome": "forest",
-        "season": "Any",
-        "tags": [
-            "hunting",
-            "medium_prey"
-        ],
-        "intro_text": "Your patrol comes across a vole nibbling at a seed.",
-        "success_text": {
-            "unscathed_common": "r_c drops into a crouch and lightly stalks towards the vole. They pause, waggling their haunches before pouncing. They catch the vole easily and deliver a killing bite to the back of its head.",
-            "unscathed_rare": "r_c drops into a crouch and begins stalking forward. When they get close, the vole suddenly stops chewing and r_c takes the opportunity to pounce. They kill the prey quickly and lick the blood from their lips with satisfaction.",
-            "stat_skill": "s_c drops into a crouch and has to consciously stop their tail from swaying in excitement as they stalk the prey. Once they think they're close enough, they give their haunches a little wiggle and leap. They catch the vole squarely between their paws and kill it quickly."
-        },
-        "fail_text": {
-            "unscathed_common": "r_c drops into a crouch and begins to stalk forward. They're preparing to pounce when their paw lightly brushes a twig and the vole immediately takes off. They give chase, but the critter disappears into a burrow. Mousedung!"
-        },
-        "decline_text": "Your patrol decides to look for other prey.",
-        "chance_of_success": 50,
-        "exp": 10,
-        "win_skills": [
-            "HUNTER,2"
-        ],
-        "min_cats": 1,
-        "max_cats": 3
-    }
   {
     "patrol_id": "fst_hunt_vole1",
     "biome": "forest",
