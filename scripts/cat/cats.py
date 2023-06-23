@@ -430,14 +430,10 @@ class Cat():
             elif game.clan.leader_lives <= 0:
                 self.dead = True
                 game.clan.leader_lives = 0
-                self.thought = 'Is surprised to find themselves walking the stars of Silverpelt'
                 if game.clan.instructor.df is False:
-                    text = 'They\'ve lost their last life and have travelled to StarClan.'
                 else:
-                    text = 'They\'ve has lost their last life and have travelled to the Dark Forest.'
         else:
             self.dead = True
-            self.thought = 'Is surprised to find themselves walking the stars of Silverpelt'
 
         # Clear Relationships. 
         self.relationships = {}
