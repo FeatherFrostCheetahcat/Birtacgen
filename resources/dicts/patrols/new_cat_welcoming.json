@@ -21,7 +21,6 @@
         },
         "antagonize_text": "Your patrol approaches the loner and tells them firmly that newcomers aren't being taken in right now. The loner seems disappointed, but leaves anyway.",
         "antagonize_fail_text": "The patrol approaches the loner and tries to explain that c_n currently has enough mouths to feed, but the loner seems to take offense and leaves in a huff.",
-        "chance_of_success": 60,
         "exp": 10,
         "win_skills": [
             "SPEAKER,2"
@@ -51,7 +50,6 @@
         },
         "antagonize_text": "p_l approaches the loner and tells them firmly that newcomers aren't being taken in right now. The loner seems disappointed, but leaves anyway.",
         "antagonize_fail_text": "p_l approaches the loner and tries to explain that c_n currently has enough mouths to feed, but the loner seems to take offense and leaves in a huff.",
-        "chance_of_success": 60,
         "exp": 10,
         "win_skills": [
             "SPEAKER,2"
@@ -261,7 +259,6 @@
         },
         "antagonize_text": "The patrol says that they can't take on another cat right now, but they point the loner in the direction of the neighboring Clan.",
         "antagonize_fail_text": "The patrol says that they can't take on another cat right now and tries to direct the loner somewhere else, but the loner hisses and says that they can find their own way.",
-        "chance_of_success": 40,
         "exp": 10,
         "win_skills": [
             "SPEAKER,2"
@@ -291,7 +288,6 @@
         },
         "antagonize_text": "p_l says that c_n can't take on another cat right now, but {PRONOUN/p_l/subject} {VERB/p_l/point/points} the loner in the direction of the neighboring Clan.",
         "antagonize_fail_text": "p_l says that c_n can't take on another cat right now and tries to direct the loner somewhere else, but the loner hisses and says that they can find their own way.",
-        "chance_of_success": 40,
         "exp": 10,
         "win_skills": [
             "SPEAKER,2"
@@ -396,7 +392,6 @@
         ],
         "intro_text": "While searching for some specific herbs p_l is startled by weird sounds and whispers on the wind.",
         "decline_text": "Unnerved and unable to discern if it is a sign from StarClan or nothing, {PRONOUN/p_l/subject} {VERB/p_l/go/goes} back to c_n to ask for help and guidance.",
-        "chance_of_success": 45,
         "exp": 10,
         "success_text": {
             "unscathed_common": "The sounds die away and then start up again in strange, unpredictable intervals. Investigating, p_l suddenly finds {PRONOUN/p_l/self} nose to nose with a panting, bleeding queen, one desperately trying to keep their newborn litter quiet. p_l brings the queen back to camp, where the Clan can assist.",
@@ -450,7 +445,6 @@
         ],
         "intro_text": "While searching for some specific herbs p_l is startled by weird sounds and whispers on the wind.",
         "decline_text": "Unnerved and unable to discern if it is a sign from StarClan or nothing, {PRONOUN/p_l/subject} {VERB/p_l/go/goes} back to c_n to ask for help and guidance.",
-        "chance_of_success": 45,
         "exp": 10,
         "success_text": {
             "unscathed_common": "The sounds die away and then start up again in strange, unpredictable intervals. Investigating, p_l suddenly finds {PRONOUN/p_l/self} nose to nose with a panting, bleeding queen, one desperately trying to keep their newborn litter quiet. p_l brings the queen back to camp, where the Clan can assist.",
@@ -478,7 +472,6 @@
         ],
         "intro_text": "While searching for some specific herbs p_l is startled by weird sounds and whispers on the wind.",
         "decline_text": "Unnerved and unable to discern if it is a sign from StarClan or nothing, {PRONOUN/p_l/subject} {VERB/p_l/go/goes} back to c_n to ask for help and guidance.",
-        "chance_of_success": 45,
         "exp": 10,
         "success_text": {
             "unscathed_common": "p_l, sure that it is a sign of StarClan, follows the faint wailing. Instead {PRONOUN/p_l/subject} {VERB/p_l/find/finds} a queen who lost their life in a harsh kitting, their newborn kits clinging to a body that will never move again. p_l instantly wraps {PRONOUN/p_l/self} around the kits and starts thinking about what they'll need to do to move them to camp.",
@@ -507,7 +500,6 @@
         ],
         "intro_text": "While searching for some specific herbs, p_l is startled by weird sounds and whispers on the wind.",
         "decline_text": "Unnerved and unable to discern if it is a sign from StarClan or nothing, {PRONOUN/p_l/subject} {VERB/p_l/go/goes} back to c_n to ask for help and guidance.",
-        "chance_of_success": 45,
         "exp": 10,
         "success_text": {
             "unscathed_common": "The sounds die away and then start up again in strange, unpredictable intervals. Investigating, p_l suddenly finds {PRONOUN/p_l/self} nose to nose with a panting, bleeding queen, one desperately trying to keep their newborn litter quiet. {PRONOUN/p_l/subject/CAP} {VERB/p_l/run/runs} for home, desperate to bring help.",
@@ -536,7 +528,6 @@
         ],
         "intro_text": "While searching for some specific herbs, p_l is startled by weird sounds and whispers on the wind.",
         "decline_text": "Unnerved and unable to discern if it is a sign from StarClan or nothing, {PRONOUN/p_l/subject} {VERB/p_l/go/goes} back to c_n to ask for help and guidance.",
-        "chance_of_success": 45,
         "exp": 10,
         "success_text": {
             "unscathed_common": "p_l, sure that it is a sign of StarClan, follows the faint wailing. Instead {PRONOUN/p_l/subject} {VERB/p_l/find/finds} a queen who lost their life in a harsh kitting, their newborn kits clinging to a body that will never move again. p_l tries to comfort the poor kittens, curling around them to share {PRONOUN/p_l/poss} body heat, and wails until a passing patrol hears {PRONOUN/p_l/object}.",
@@ -600,7 +591,6 @@
         ],
         "intro_text": "As the patrol is checking the border lines, they hear the traispe of pawsteps through the territory.",
         "decline_text": "They decide to leave it alone. It's probably just another Clanmate out in the territory.",
-        "chance_of_success": 50,
         "exp": 10,
         "success_text": {
             "unscathed_common": "The patrol approaches warily and comes upon a kittypet that's sniffing around. The kittypet notices their arrival and brightly says that they've heard about the Clan and wish to join. The patrol agrees to take them back to camp.",
@@ -640,7 +630,6 @@
         ],
         "intro_text": "The patrol is checking along the border lines when they hear a startling sound - a hiss of pain? They quickly follow the sound to the source. It's a loner, and they appear to be injured.",
         "decline_text": "It's probably nothing. The patrol leaves the noise alone and continues on their way.",
-        "chance_of_success": 50,
         "exp": 10,
         "success_text": {
             "unscathed_common": "The patrol approaches cautiously. The loner draws themself up, but doing so causes them to let out another hiss. p_l offers to bring them to camp. Though they seem hesitant, the loner agrees.",
@@ -671,7 +660,6 @@
         ],
         "intro_text": "p_l is checking along the border lines when {PRONOUN/p_l/subject} {VERB/p_l/hear/hears} a startling sound - a hiss of pain? {PRONOUN/p_l/subject/CAP} quickly {VERB/p_l/follow/follows} the sound to the source. It's a loner, and they appear to be injured.",
         "decline_text": "It's probably nothing. p_l leaves the noise alone and continues on {PRONOUN/p_l/poss} way.",
-        "chance_of_success": 50,
         "exp": 10,
         "success_text": {
             "unscathed_common": "p_l approaches cautiously. The loner draws themself up, but doing so causes them to let out another hiss. p_l offers to bring them to camp. Though they seem hesitant, the loner agrees.",
@@ -701,7 +689,6 @@
         ],
         "intro_text": "It's a cold day in c_n's territory, and app1 is the only cat stepping out. {PRONOUN/app1/subject/CAP}{VERB/app1/'re/'s} by {PRONOUN/app1/self} when {PRONOUN/app1/subject} {VERB/app1/hear/hears} a cat screaming for help.",
         "decline_text": "Nope, not today, there's no way app1 is running after ghost cats, no thank you.",
-        "chance_of_success": 60,
         "exp": 20,
         "success_text": {
             "unscathed_common": "Oh StarClan, app1 can't live with leaving some poor sad soul alone on the mountainside in the cold! Following the pitious cries, app1 finds a terrified kittypet crouched by a Thunderpath, desperately searching for a monster and the Twolegs that it contains. But it's alright, app1 is here, and c_n will be able to help.",
