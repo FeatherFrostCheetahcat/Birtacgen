@@ -2,6 +2,8 @@ import pygame.transform
 import pygame_gui.elements
 from random import choice
 
+from scripts.cat_relations.inheritance import Inheritance
+
 from .base_screens import Screens, cat_profiles
 
 from scripts.utility import get_personality_compatibility, get_text_box_theme, scale, scale_dimentions
@@ -1252,6 +1254,9 @@ class ChooseMateScreen(Screens):
                 self.selected_cat = event.ui_element.cat_object
                 self.update_selected_cat()
             elif event.ui_element in self.offspring_cat_buttons.values():
+                if event.ui_element.cat_object.faded:
+                    return
+                
                 game.switches["cat"] = event.ui_element.cat_object.ID
                 self.change_screen("profile screen")
             
@@ -1434,8 +1439,6 @@ class ChooseMateScreen(Screens):
     def update_offspring_container(self):
         """Updates everything in the mates container, including the list of current mates, checkboxes
         and the page"""
-        
-        
         self.all_offspring = [Cat.fetch_cat(i) for i in list(self.the_cat.inheritance.kits) if isinstance(Cat.fetch_cat(i), Cat)]
         if self.selected_cat and self.kits_selected_pair:
             self.all_offspring = [i for i in self.all_offspring if self.selected_cat.is_parent(i)]
@@ -1697,6 +1700,8 @@ class ChooseMateScreen(Screens):
         """Updates all elements with the current cat, as well as the selected cat.
             Called when the screen switched, and whenever the focused cat is switched"""
         self.the_cat = Cat.all_cats[game.switches['cat']]
+        if not self.the_cat.inheritance:
+            self.the_cat.create_inheritance_new_cat()
         self.get_previous_next_cat()
 
         for ele in self.current_cat_elements:
@@ -2021,7 +2026,6 @@ class ChooseMateScreen(Screens):
             self.previous_cat_button.enable()
 
     def on_use(self):
-
         # Due to a bug in pygame, any image with buttons over it must be blited
         screen.blit(self.list_frame, (150 / 1600 * screen_x, 782 / 1400 * screen_y))
 
@@ -2030,7 +2034,8 @@ class ChooseMateScreen(Screens):
         
         # Behold! The uglest list comprehension ever created! 
         valid_mates = [i for i in Cat.all_cats_list if
-                       self.the_cat.is_potential_mate(
+                       not i.faded
+                       and self.the_cat.is_potential_mate(
                            i, for_love_interest=False, 
                            age_restriction=False) 
                        and i.ID not in self.the_cat.mate
@@ -2322,7 +2327,7 @@ class RelationshipScreen(Screens):
         self.inspect_cat = None
 
         # Keep a list of all the relations
-        self.all_relations = list(self.the_cat.relationships.values()).copy()
+        self.all_relations = sorted(self.the_cat.relationships.values(), key=lambda x: sum(map(abs, [x.romantic_love, x.platonic_like, x.dislike, x.admiration, x.comfortable, x.jealousy, x.trust])), reverse=True)
 
         self.focus_cat_elements["header"] = pygame_gui.elements.UITextBox(str(self.the_cat.name) + " Relationships",
                                                                           scale(pygame.Rect((150, 150), (800, 100))),
@@ -3088,6 +3093,18 @@ class MediationScreen(Screens):
         x = 130
         y = 970
         for cat in self.all_cats[self.page - 1]:
+            if game.clan.clan_settings["show_fav"] and cat.favourite:
+                _temp = pygame.transform.scale(
+                            pygame.image.load(
+                                f"resources/images/fav_marker.png").convert_alpha(),
+                            (100, 100))
+                    
+                self.cat_buttons.append(
+                    pygame_gui.elements.UIImage(
+                        scale(pygame.Rect((x, y), (100, 100))),
+                        _temp))
+                self.cat_buttons[-1].disable()
+            
             self.cat_buttons.append(
                 UISpriteButton(scale(pygame.Rect((x, y), (100, 100))), cat.sprite, cat_object=cat)
             )
@@ -3624,6 +3641,7 @@ class ChooseAdoptiveParentScreen(Screens):
                 else:
                     self.the_cat.adoptive_parents.remove(self.selected_cat.ID)
                     self.the_cat.create_inheritance_new_cat()
+                    self.selected_cat.create_inheritance_new_cat()
                 
                 self.draw_tab_button()
                 self.update_toggle_button()
@@ -3797,6 +3815,8 @@ class ChooseAdoptiveParentScreen(Screens):
                     pygame.transform.scale(birth_parents[0].sprite, (300, 300)), 
                     cat_object=birth_parents[0], manager=MANAGER, 
                     container=self.birth_container)
+            if birth_parents[0].faded:
+                self.birth_parents_buttons["cat"].disable()
         elif len(birth_parents) >= 2:
             x_pos = 300
             for i, _par in enumerate(birth_parents):
@@ -3807,6 +3827,8 @@ class ChooseAdoptiveParentScreen(Screens):
                     container=self.birth_container,
                     tool_tip_text=str(_par.name),
                     starting_height=2)
+                if _par.faded:
+                    self.birth_parents_buttons["cat" + str(i)].disable()
                 x_pos += 330
         
     def update_adoptive_parents_container(self):
@@ -3868,6 +3890,8 @@ class ChooseAdoptiveParentScreen(Screens):
                 _off.sprite, cat_object=_off, manager=MANAGER, 
                 container=self.adoptive_container,
                 starting_height=2)
+            if _off.faded:
+                self.adoptive_parents_buttons["cat" + str(i)].disable()
             pos_x += 120
             if pos_x >= 1200:
                 pos_x = 30
@@ -4078,8 +4102,11 @@ class ChooseAdoptiveParentScreen(Screens):
 
         if reset_selected_cat:
             self.selected_cat = None
-            if self.the_cat.adoptive_parents:
-                self.selected_cat = Cat.fetch_cat(self.the_cat.adoptive_parents[0])
+            # Protection against faded
+            for x in self.the_cat.adoptive_parents:
+                parent_ob = Cat.fetch_cat(x)
+                if not parent_ob.faded:
+                    self.selected_cat = Cat.fetch_cat(parent_ob)
             self.update_selected_cat()
         
         self.draw_tab_button()
@@ -4214,27 +4241,32 @@ class ChooseAdoptiveParentScreen(Screens):
 
     def get_valid_adoptive_parents(self):
         """Get a list of valid parents for the current cat"""
-        valid_parents = [i for i in Cat.all_cats_list if
-                         not (i.dead or i.outside or i.exiled) and  # Adoptive parents cant be dead or outside
-                         i.ID != self.the_cat.ID and # Can't be your own adoptive parent
-                         self.the_cat.ID not in i.get_parents() and # It would be weird to be adopted by your child
-                         i.moons - self.the_cat.moons >= 14 and # Adoptive parent must be at least 14 moons older. 
-                         i.ID not in self.the_cat.mate and # Can't set your mate your adoptive parent. 
-                         i.ID not in self.the_cat.adoptive_parents and # already adoptive paret
-                         (not self.mates_current_parents or self.is_parent_mate(self.the_cat, i)) and #Toggle for only mates of current parents
-                         (not self.unrelated_only or i.ID not in self.the_cat.get_relatives())] #Toggle for only not-closely-related. 
-        
-        valid_parents = [i for i in Cat.all_cats_list if
-                         not (i.dead or i.outside or i.exiled) and  # Adoptive parents cant be dead or outside
-                         i.ID != self.the_cat.ID and 
-                         self.the_cat.ID not in i.get_parents() and 
-                         i.moons - self.the_cat.moons >= 14 and 
-                         i.ID not in self.the_cat.mate and
-                         i.ID not in self.the_cat.adoptive_parents and
-                         (not self.mates_current_parents or self.is_parent_mate(self.the_cat, i)) and
-                         (not self.unrelated_only or i.ID not in self.the_cat.get_relatives())]
+        valid_parents = [inter_cat for inter_cat in Cat.all_cats_list if
+                         not (inter_cat.dead or inter_cat.outside or inter_cat.exiled) and  # Adoptive parents cant be dead or outside
+                         inter_cat.ID != self.the_cat.ID and # Can't be your own adoptive parent
+                         inter_cat.moons - self.the_cat.moons >= 14 and # Adoptive parent must be at least 14 moons older. -> own child can't adopt you
+                         inter_cat.ID not in self.the_cat.mate and # Can't set your mate your adoptive parent. 
+                         inter_cat.ID not in self.the_cat.get_parents() and # Adoptive parents can't already be their parent
+                         self.not_related_to_mate(inter_cat) and # quick fix TODO: change / remove later
+                         (not self.mates_current_parents or self.is_parent_mate(self.the_cat, inter_cat)) and #Toggle for only mates of current parents
+                         (not self.unrelated_only or inter_cat.ID not in self.the_cat.get_relatives())] #Toggle for only not-closely-related. 
         
         return valid_parents
+
+    def not_related_to_mate(self, possible_parent) -> bool:
+        """
+        This should prevent weird combinations, till the pop-up is implemented.
+        It checks the potential parent is a relative of your mate.
+        Return if the cat is a possible adoptive parent.
+        """
+        if len(self.the_cat.mate) > 0:
+            for mate_id in self.the_cat.mate:
+                mate = Cat.fetch_cat(mate_id)
+                mate_relatives = mate.get_relatives()
+                if possible_parent.ID in mate_relatives:
+                    return False
+        
+        return True
 
     def get_previous_next_cat(self):
         is_instructor = False
@@ -4254,12 +4286,12 @@ class ChooseAdoptiveParentScreen(Screens):
                 self.next_cat = 1
             if self.next_cat == 0 and check_cat.ID != self.the_cat.ID and check_cat.dead == self.the_cat.dead and \
                     check_cat.ID != game.clan.instructor.ID and not check_cat.exiled and not check_cat.outside and \
-                    check_cat.age not in ["adolescent", "kitten", "newborn"] and check_cat.df == self.the_cat.df:
+                    check_cat.df == self.the_cat.df:
                 self.previous_cat = check_cat.ID
 
             elif self.next_cat == 1 and check_cat.ID != self.the_cat.ID and check_cat.dead == self.the_cat.dead and \
                     check_cat.ID != game.clan.instructor.ID and not check_cat.exiled and not check_cat.outside and \
-                    check_cat.age not in ["adolescent", "kitten", "newborn"] and check_cat.df == self.the_cat.df:
+                    check_cat.df == self.the_cat.df:
                 self.next_cat = check_cat.ID
 
             elif int(self.next_cat) > 1:

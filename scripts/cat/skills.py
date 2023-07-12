@@ -1,6 +1,7 @@
 import random
 from enum import Enum, Flag, auto
 from typing import Union
+from scripts.game_structure.game_essentials import game
 
 class SkillPath(Enum):
     TEACHER = (
@@ -101,9 +102,15 @@ class SkillPath(Enum):
     )
     STAR = (
         "curious about StarClan",
-        "innate connection to StarClan",
-        "strong connection to StarClan",
-        "unbreakable connection to StarClan"
+        "connection to Starclan",
+        "deep StarClan bond",
+        "unshakable StarClan link",
+    )
+    DARK = (
+        "interested in the Dark Forest",
+        "Dark Forest affinity",
+        "deep Dark Forest bond",
+        "unshakable Dark Forest link",
     )
     OMEN = (
         "interested in oddities",
@@ -142,11 +149,12 @@ class SkillPath(Enum):
         
         uncommon_paths = [i for i in [SkillPath.GHOST, SkillPath.PROPHET, 
                           SkillPath.CLAIRVOYANT, SkillPath.DREAM,
-                          SkillPath.OMEN, SkillPath.STAR, SkillPath.HEALER]
+                          SkillPath.OMEN, SkillPath.STAR, SkillPath.HEALER, 
+                          SkillPath.DARK]
                           if i not in exclude]
         
         
-        if not int(random.random() * 25):
+        if not int(random.random() * 15):
             return random.choice(uncommon_paths)
         else:
             common_paths = [i for i in list(SkillPath) if 
@@ -190,12 +198,13 @@ class Skill():
         SkillPath.LORE: "lorekeeping",
         SkillPath.CAMP: "campkeeping",
         SkillPath.HEALER: "healing",
-        SkillPath.STAR: "starclan",
+        SkillPath.STAR: "StarClan",
         SkillPath.OMEN: "omen",
         SkillPath.DREAM: "dreaming",
         SkillPath.CLAIRVOYANT: "predicting",
         SkillPath.PROPHET: "prophesying",
-        SkillPath.GHOST: "ghosts"
+        SkillPath.GHOST: "ghosts",
+        SkillPath.DARK: "dark forest"
     }
     
     
@@ -209,6 +218,9 @@ class Skill():
             self._p = self.point_range[0]
         else:
             self._p = points
+    
+    def __repr__(self) -> str:
+        return f"<Skill: {self.path}, {self.points}, {self.tier}, {self.interest_only}>" 
     
     def get_short_skill(self):
         return Skill.short_strings.get(self.path, "???")
@@ -328,7 +340,8 @@ class CatSkills:
         SkillPath.DREAM: SkillTypeFlag.SUPERNATURAL,
         SkillPath.CLAIRVOYANT: SkillTypeFlag.SUPERNATURAL | SkillTypeFlag.OBSERVANT,
         SkillPath.PROPHET: SkillTypeFlag.SUPERNATURAL,
-        SkillPath.GHOST: SkillTypeFlag.SUPERNATURAL
+        SkillPath.GHOST: SkillTypeFlag.SUPERNATURAL,
+        SkillPath.DARK: SkillTypeFlag.SUPERNATURAL
     }
     # pylint: enable=unsupported-binary-operation
     
@@ -357,6 +370,9 @@ class CatSkills:
                 self.secondary = None
             
             self.hidden = hidden_skill
+    
+    def __repr__(self) -> str:
+        return f"<CatSkills: Primary: |{self.primary}|, Secondary: |{self.secondary}|, Hidden: |{self.hidden}|>"
     
     @staticmethod
     def generate_new_catskills(status, moons, hidden_skill:HiddenSkillEnum=None):
@@ -413,11 +429,11 @@ class CatSkills:
                 output.append(self.primary.skill)
             if self.secondary:
                 output.append(self.secondary.skill)
-        
+
         if not output:
             return "???"
-        else:
-            return " + ".join(output) 
+
+        return " & ".join(output)
 
     def mentor_influence(self, mentor):
         """
@@ -433,15 +449,15 @@ class CatSkills:
         mentor_tags = CatSkills.influence_flags[mentor.skills.primary.path] if mentor.skills.primary else None
 
         can_primary = bool(
-            CatSkills.influence_flags[self.primary.path] | mentor_tags) if self.primary and mentor_tags else False
+            CatSkills.influence_flags[self.primary.path] & mentor_tags) if self.primary and mentor_tags else False
         can_secondary = bool(
-            CatSkills.influence_flags[self.secondary.path] | mentor_tags) if self.secondary and mentor_tags else False
+            CatSkills.influence_flags[self.secondary.path] & mentor_tags) if self.secondary and mentor_tags else False
             
         # If nothing can be effected, just return as well.         
         if not (can_primary or can_secondary):
             return
 
-        amount_effect = random.randint(2, 5)
+        amount_effect = random.randint(1, 4)
         
         if can_primary and can_secondary:
             if random.randint(1, 2) == 1:
@@ -465,26 +481,27 @@ class CatSkills:
         :param the_cat: the cat object for affected cat
         """
         
+        if the_cat.status == 'newborn' or the_cat.moons <= 0:
+            return
+        
+        # Give a primary is there isn't one already, and the cat is older than one moon. 
+        if not self.primary:
+            parents = [the_cat.fetch_cat(i) for i in [the_cat.parent1, the_cat.parent2] + the_cat.adoptive_parents if 
+                    type(the_cat) == type(the_cat.fetch_cat(i))]
+            parental_paths = [i.skills.primary.path for i in parents if i.skills.primary] + [i.skills.secondary.path for i in parents if i.skills.secondary]
+                    
+            # If there are parental paths, flip a coin to determine if they will get a parents path
+            if parental_paths and random.randint(0, 1):
+                self.primary = Skill(random.choice(parental_paths), points=0, interest_only=True if the_cat.status in ["apprentice", "kitten"] else False)
+            else:
+                self.primary = Skill.get_random_skill(points=0, interest_only=True if the_cat.status in ["apprentice", "kitten"] else False)
+        
+        
         if not (the_cat.outside or the_cat.exiled):
-            
-            if the_cat.status == 'newborn':
-                return
-            
-            # Give a primary is there isn't one already (and the kits is not a newborn)
-            if not self.primary:
-                parents = [the_cat.fetch_cat(i) for i in [the_cat.parent1, the_cat.parent2] + the_cat.adoptive_parents if 
-                        type(the_cat) == type(the_cat.fetch_cat(i))]
-                parental_paths = [i.skills.primary.path for i in parents if i.skills.primary] + [i.skills.secondary.path for i in parents if i.skills.secondary]
                         
-                # If there are parental paths, flip a coin to determine if they will get a parents path
-                if parental_paths and random.randint(0, 1):
-                    self.primary = Skill(random.choice(parental_paths), points=0, interest_only=True if the_cat.status in ["apprentice", "kitten"] else False)
-                else:
-                    self.primary = Skill.get_random_skill(points=0, interest_only=True if the_cat.status in ["apprentice", "kitten"] else False)
-            
             if the_cat.status == 'kitten':
                 # Check to see if the cat gains a secondary
-                if not self.secondary and not int(random.random() * 6):
+                if not self.secondary and not int(random.random() * 22):
                     # if there's no secondary skill, try to give one!
                     self.secondary = Skill.get_random_skill(points=0, interest_only=True, exclude=self.primary.path)
                 
@@ -501,13 +518,13 @@ class CatSkills:
 
             elif 'apprentice' in the_cat.status:
                 # Check to see if the cat gains a secondary
-                if not self.secondary and not int(random.random() * 6):
+                if not self.secondary and not int(random.random() * 22):
                     # if there's no secondary skill, try to give one!
                     self.secondary = Skill.get_random_skill(points=0, interest_only=True, exclude=self.primary.path)
                 
-                # if the the_cat has skills, check if they get any points this moon
+                # Check if they get any points this moon
                 if not int(random.random() * 4):
-                    amount_effect = random.randint(1, 4)
+                    amount_effect = random.randint(2, 5)
                     if self.primary and self.secondary:
                         if random.randint(1, 2) == 1:
                             self.primary.points += amount_effect
@@ -516,15 +533,24 @@ class CatSkills:
                     elif self.primary:
                         self.primary.points += amount_effect
 
-            elif the_cat.moons > 150:
+            elif the_cat.moons > 120:
                 # for old cats, we want to check if the skills start to degrade at all, age is the great equalizer
-                if not int(random.random() * 300 - the_cat.moons):  # chance increases as the_cat ages
+                
+                self.primary.interest_only = False
+                if self.secondary:
+                    self.secondary.interest_only = False
+                
+                chance = max(1, 160 - the_cat.moons)
+                if not int(random.random() * chance):  # chance increases as the_cat ages
                     self.primary.points -= 1
+                    if self.secondary:
+                        self.secondary.points -= 1
             else:
                 #If they are still in "interest" stage, there is a change to swap primary and secondary
+                # If they are still in "interest" but reached this part, they just graduated. 
                 if self.primary.interest_only and self.secondary:
-                    flip = random.choices([False, True], [max(self.primary.points, 1), 
-                                                        max(self.secondary.points, 1)])[0]
+                    flip = random.choices([False, True], [self.primary.points + 1, 
+                                                        self.secondary.points + 1])[0]
                     if flip:
                         _temp = self.primary
                         self.primary = self.secondary
@@ -535,35 +561,23 @@ class CatSkills:
                     self.secondary.interest_only = False
                     
                 # If a cat doesn't can a secondary, have a small change for them to get one. 
-                if not self.secondary and not int(random.random() * 200):
-                    self.secondary = Skill.get_random_skill(exclude=self.primary.path)
+                # but, only a first-tier skill. 
+                if not self.secondary and not int(random.random() * 300):
+                    self.secondary = Skill.get_random_skill(exclude=self.primary.path, point_tier=1)
                 
-                # If a cat is not an apprentice or kit, 
-                # only has a change for primary to level up. 
-                if not int(random.random() * 4):
+                # There is a change for primary to condinue to improve throughout life 
+                # That chance decreases as the cat gets older. 
+                # This is to simulate them reaching their "peak"
+                if not int(random.random() * int(the_cat.moons/4)):
                     self.primary.points += 1  
         else:
-            # section for outside cats only. Trimmed down, only the basics. 
-            if the_cat.moons <= 0:
-                return
-            
-            # Give a primary is there isn't one already, and the cat is older than one moon. 
-            if not self.primary:
-                parents = [the_cat.fetch_cat(i) for i in [the_cat.parent1, the_cat.parent2] + the_cat.adoptive_parents if 
-                        type(the_cat) == type(the_cat.fetch_cat(i))]
-                parental_paths = [i.skills.primary.path for i in parents if i.skills.primary] + [i.skills.secondary.path for i in parents if i.skills.secondary]
-                        
-                # If there are parental paths, flip a coin to determine if they will get a parents path
-                if parental_paths and random.randint(0, 1):
-                    self.primary = Skill(random.choice(parental_paths), points=0, interest_only=True if the_cat.status in ["apprentice", "kitten"] else False)
-                else:
-                    self.primary = Skill.get_random_skill(points=0, interest_only=True if the_cat.status in ["apprentice", "kitten"] else False)
-            
-            # For outside cats, don't worry about secondary skill. 
+            # For outside cats, just check interest and flip it if needed. 
+            # Going on age, rather than status here. 
             if the_cat.age not in ["kitten", "adolescent"]:
                 self.primary.interest_only = False
                 if self.secondary:
                     self.secondary.interest_only = False
+    
     def meets_skill_requirement(self, path: Union[str, SkillPath, HiddenSkillEnum], min_tier:int=0) -> bool:
         """Checks both primary and seconday, to see if cat matches skill restaint"""
         
@@ -591,7 +605,36 @@ class CatSkills:
                     return True
         
         return False
+    
+    def check_skill_requirement_list(self, skill_list:list) -> int:
+        """Takes a whole list of skill requirments in the form 
+            [ "SKILL_PATH,MIN_TIER" ... ] and determines how many skill
+            requirments are meet. The list format is used in all patrol and event skill
+            restrictions. Returns an integer value of how many skills requirments are meet.  
+            """
         
+        skills_meet = 0
+        
+        min_tier = 0
+        for _skill in skill_list:
+            spl = _skill.split(",")
+            
+            if len(spl) != 2:
+                print("Incorrectly formatted skill restriction", _skill)
+                continue
+            
+            try:
+                min_tier = int(spl[1])
+            except ValueError:
+                print("Min Skill Tier cannot be converted to int", _skill)
+                continue
+            
+            if self.meets_skill_requirement(spl[0], min_tier):
+                skills_meet += 1
+        
+        return skills_meet
+                     
+    
     @staticmethod
     def get_skills_from_old(old_skill, status, moons):
         """Generates a CatSkill object"""

@@ -1502,6 +1502,29 @@
             }
         }
     },
+    "#change_nonbi_button": 
+    {
+        "prototype": "#image_button",
+		"images":
+        {
+            "normal_image":
+            {
+                "path": "resources/images/buttons/change_nonbi.png"
+            },
+            "hovered_image":
+            {
+                "path": "resources/images/buttons/change_nonbi_hover.png"
+            },
+			"selected_image":
+            {
+                "path": "resources/images/buttons/change_nonbi_hover.png"
+            },
+            "disabled_image":
+            {
+                "path":"resources/images/buttons/change_nonbi_unavailable.png"
+            }
+        }
+    },
     "#prevent_kits_button": 
     {
         "prototype": "#image_button",
@@ -4113,7 +4136,7 @@
             },
             "selected_image":
             {
-                "path": "resources/images/buttons/cat_icon.png"
+                "path": "resources/images/buttons/cat_icon_hover.png"
             },
             "disabled_image":
             {

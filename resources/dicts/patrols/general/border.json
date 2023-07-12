@@ -213,8 +213,8 @@
         "antagonize_text": null,
         "antagonize_fail_text": null,
         "history_text": {
-            "scar": "This cat got a scar from a fight with a small dog, but {PRONOUN/r_c/subject} always {VERB/r_c/say/says} it was a huge dog.",
-            "reg_death": "This cat was killed in a fight with a small dog, but {PRONOUN/r_c/subject} took the dog out with {PRONOUN/r_c/object}.",
+            "scar": "This cat got a scar from a fight with a small dog, but {PRONOUN/m_c/subject} always {VERB/m_c/say/says} it was a huge dog.",
+            "reg_death": "This cat was killed in a fight with a small dog, but {PRONOUN/m_c/subject} took the dog out with {PRONOUN/m_c/object}.",
             "lead_death": "killed in a fight with a small dog"
         }
     },
@@ -254,7 +254,7 @@
         "antagonize_text": null,
         "antagonize_fail_text": null,
         "history_text": {
-            "scar": "This cat got a scar from a fight with a small dog, but {PRONOUN/r_c/subject} always {VERB/r_c/say/says} it was a huge dog."
+            "scar": "This cat got a scar from a fight with a small dog, but {PRONOUN/m_c/subject} always {VERB/m_c/say/says} it was a huge dog."
         }
     },
     {
@@ -293,7 +293,7 @@
         "antagonize_text": null,
         "antagonize_fail_text": null,
         "history_text": {
-            "scar": "This cat got a scar from a fight with a small dog, though {PRONOUN/r_c/subject} {VERB/r_c/insist/insists} it was huge."
+            "scar": "This cat got a scar from a fight with a small dog, though {PRONOUN/m_c/subject} {VERB/m_c/insist/insists} it was huge."
         }
     },
     {
@@ -343,7 +343,7 @@
         "chance_of_success": 55,
         "exp": 20,
         "success_text": {
-            "unscathed_common": "p_l wouldn't be able to forgive {PRONOUN/p_l/self} if something happened to those kits. {PRONOUN/p_l/subject} {VERB/p_l/order/orders} the patrol other than r_c to go back to camp, and r_c and p_l go to bring the kits back to o_c_n.",
+            "unscathed_common": "p_l wouldn't be able to forgive {PRONOUN/p_l/self} if something happened to those kits. {PRONOUN/p_l/subject/CAP} {VERB/p_l/order/orders} the patrol other than r_c to go back to camp, and r_c and p_l go to bring the kits back to o_c_n.",
             "unscathed_rare": "p_l orders the patrol except r_c back to camp. p_l and r_c grab the kits by their scruffs despite their protests, and on their journey to o_c_n they are greeted by a concerned patrol that is very happy and grateful to see the kits safe, thanking them profusely.",
             "stat_skill": "p_l orders the patrol to go back to camp asking that r_c be left behind to help {PRONOUN/p_l/object}. They go up to the little kits convincing them that they are gonna give them the best badger ride ever. As they approach o_c_n's camp, with the kits squealing with joy on their back, they are greeted with relief and laughter.",
             "stat_trait": "p_l decides to bring r_c with {PRONOUN/p_l/object} to o_c_n and orders the others back to camp. As they approach o_c_n, they are immediately greeted by the leader, who recognizes p_l - knowing {PRONOUN/p_l/object} to be a kind and caring cat - and thanks both of them sincerely."
@@ -371,7 +371,7 @@
         "antagonize_text": "p_l seizes the opportunity to weaken o_c_n and orders the patrol to attack and kill the kits.",
         "antagonize_fail_text": "p_l and the patrol cross the border to attack the two kits when they are thwarted by an o_c_n patrol that was looking for the kits. Fox-dung, a good opportunity to weaken o_c_n has failed.",
         "history_text": {
-            "reg_death": "r_c was slain by o_c_n warriors",
+            "reg_death": "m_c was slain by o_c_n warriors",
             "lead_death": "lost a life by o_c_n warriors"
         }
     },
@@ -396,10 +396,10 @@
         "success_text": {
             "unscathed_common": "p_l is not willing to let any cat die to a badger. {PRONOUN/p_l/subject/CAP} {VERB/p_l/order/orders} the patrol to continue on while {PRONOUN/p_l/subject} {VERB/p_l/wait/waits} on an o_c_n patrol to come by, and to give them a warning about the badger.",
             "unscathed_rare": "As luck would have it, p_l smells an o_c_n patrol approaching. {PRONOUN/p_l/subject/CAP} {VERB/p_l/call/calls} out to the patrol and tells them about the badger and where {PRONOUN/p_l/subject} saw it making a den. The o_c_n patrol is grateful and return to camp immediately to report the badger to their leader.",
-            "stat_skill": "p_l tells the patrol to continue on and hops over the border to walk to o_c_n their camp. {PRONOUN/p_l/subject} {VERB/p_l/are/is} greeted at the camp entrance with bristled fur, angry hisses and the leader demanding to know what {PRONOUN/p_l/subject} {VERB/p_l/are/is} doing there. {PRONOUN/p_l/subject} {VERB/p_l/explain/explains} the situation and with {PRONOUN/p_l/poss} smooth talking skills manage to convince the cats of {PRONOUN/p_l/poss} good intentions. The leader thanks {PRONOUN/p_l/object} and orders a patrol to escort {PRONOUN/p_l/object} back to the border."
+            "stat_skill": "p_l tells the patrol to continue on and hops over the border to walk to o_c_n's camp. {PRONOUN/p_l/subject/CAP} {VERB/p_l/are/is} greeted at the camp entrance with bristled fur, angry hisses and the leader demanding to know what {PRONOUN/p_l/subject} {VERB/p_l/are/is} doing there. {PRONOUN/p_l/subject/CAP} {VERB/p_l/explain/explains} the situation and with {PRONOUN/p_l/poss} smooth talking skills manage to convince the cats of {PRONOUN/p_l/poss} good intentions. The leader thanks {PRONOUN/p_l/object} and orders a patrol to escort {PRONOUN/p_l/object} back to the border."
         },
         "fail_text": {
-            "unscathed_common": "The patrol waits patiently at the border for any o_c_n cat to appear but they are out of luck that day. p_l decides to continue the patrol as {PRONOUN/p_l/subject} {VERB/p_l/has/have} tried waiting long enough."
+            "unscathed_common": "The patrol waits patiently at the border for any o_c_n cat to appear but they are out of luck that day. p_l decides to continue the patrol as {PRONOUN/p_l/subject} {VERB/p_l/have/has} tried waiting long enough."
         },
         "win_skills": [
             "SPEAKER,1",

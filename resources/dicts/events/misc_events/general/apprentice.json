@@ -57,7 +57,7 @@
             "neg_jealousy",
             "to_both"
         ],
-        "event_text": "m_c and r_c were chatting about their day and the chores they finished when r_c mentioned {PRONOUN/r_c/subject} liked the smell of wild fruit. m_c decides to wear acc_plural on {PRONOUN/m_c/poss} pelt, hopping that r_c notices {PRONOUN/m_c/object}.",
+        "event_text": "m_c and r_c were chatting about their day and the chores they finished when r_c mentioned {PRONOUN/r_c/subject} liked the smell of wild fruit. m_c decides to wear acc_plural on {PRONOUN/m_c/poss} pelt, hoping that r_c notices {PRONOUN/m_c/object}.",
         "accessories": [
             "BLUE BERRIES",
             "HOLLY"
@@ -241,12 +241,17 @@
             "Newleaf",
             "Greenleaf",
             "Leaf-fall",
+            "other_cat",
             "other_cat_app",
             "romantic",
             "comfort",
             "trust"
         ],
-        "event_text": "m_c gives r_c a singular_acc to make up for a bad fight between them."
+        "event_text": "m_c gives r_c a acc_singular to make up for a bad fight between them.",
+        "accessories": [
+            "WILD",
+            "PLANT"
+        ]
     },
     {
         "camp": "any",

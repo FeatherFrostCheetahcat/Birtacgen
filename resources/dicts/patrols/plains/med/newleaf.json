@@ -613,7 +613,7 @@
         "exp": 10,
         "success_text": {
             "unscathed_common": "The many stems of goldenrod surround p_l as they work, snipping off stems and clumps of tiny yellow flowers to bring back to c_n's herb stores. The patrol chats as they work, exchanging gossip and news as the smell of cut stems wreathes around them",
-            "unscathed_rare": "It always amazes p_l how quickly the goldenrod bushes sprout back up after leaf-bare, and they collect more goldenrod than they were anticipating, loading up every cat until the patrol until everyone agrees the medicine cat den can't possibly fit more than this.",
+            "unscathed_rare": "It always amazes p_l how quickly the goldenrod bushes sprout back up after leaf-bare, and they collect more goldenrod than they were anticipating, loading up every cat until everyone agrees the medicine cat den can't possibly fit any more.",
             "stat_skill": "s_c has a good eye for these things, snipping off the best, lushest goldenrod to take back for the Clan's stores. They control what is harvested, while their team works to efficiently carry the herb back to camp, deferring to s_c's expertise."
         },
         "fail_text": {
@@ -802,7 +802,7 @@
             "stat_trait": "Night falls, and still s_c insists they keep going - they just can't let c_n go without. Exhausted, but determined, the medicine cat persists patiently until they find the precious, speckled leaves."
         },
         "fail_text": {
-            "injury": "p_l searches until their pawpads are sore and their muscles exhausted, but can't find lungwort anywhere. They return to camp disappointed, but determined to try again. It's simply too important to not keep a good supply of."
+            "injury": "p_l searches until their pawpads are sore and {PRONOUN/p_l/poss} muscles exhausted, but can't find lungwort anywhere. {PRONOUN/p_l/subject/CAP} return to camp disappointed, but determined to try again. It's simply too important to not keep a good supply of."
         },
         "win_skills": [
             "SENSE,2",
@@ -830,7 +830,8 @@
             "p_l_to_r_c",
             "injury",
             "sore",
-            "injure_all"
+            "injure_all",
+            "rc_has_stat"
         ],
         "intro_text": "p_l is on a mission to find lungwort now that newleaf is here. As the only reliable cure for yellowcough, they're determined that c_n replenish their stocks of it. They take along a warrior escort to help.",
         "decline_text": "A cat grabs p_l's attention before they can leave. p_l heaves a sigh - the expedition is delayed for another time.",
@@ -956,7 +957,7 @@
         "chance_of_success": 30,
         "exp": 10,
         "success_text": {
-            "unscathed_common": "The soft, rose-like scent of the mallow bushes drifts around p_l and app1 as they work. They snip off clumps of large, fuzzy, three-nubbed leaves, and the occasional pink flower, to be taken back to camp. The patrol chats as they work, exchanging gossip and news as the smell of cut stems wreathes around them.",
+            "unscathed_common": "The soft, rose-like scent of the mallow bushes drifts around p_l and r_c as they work. They snip off clumps of large, fuzzy, three-nubbed leaves, and the occasional pink flower, to be taken back to camp. The patrol chats as they work, exchanging gossip and news as the smell of cut stems wreathes around them.",
             "unscathed_rare": "While the mallow shrubs are soft, both in scent and in touch, the plants are engaged in their own vigorous newleaf competition between each other, leaving p_l with tons to harvest. It's always a relief to bring in so much after a leaf-bare without any fresh mallow sources.",
             "stat_skill": "s_c has a good eye for these things, finding an excellent patch of mallow. They control what is harvested, while their team works to efficiently carry the herb back to camp, deferring to s_c's expertise."
         },
@@ -1877,7 +1878,7 @@
             "stat_skill": "s_c has discovered a trick to harvesting the bountiful, but foul, ragwort - using their claws to tear leaves from the plant, then carefully carrying them back to camp without chewing or salivating. It's difficult, but doable, if only just."
         },
         "fail_text": {
-            "unscathed_common": "Try as they might, p_l can't quite remember the exact shape of the ragwort leaves, and isn't going to harvest from plants they haven't confidently identified. Better safe than sorry, as they say."
+            "unscathed_common": "Try as they might, p_l can't quite remember the exact shape of the ragwort leaves, and {PRONOUN/p_l/subject} {VERB/p_l/are/is}n't going to harvest from plants {PRONOUN/p_l/subject} {VERB/p_l/have/has}n't confidently identified. Better safe than sorry, as they say."
         },
         "win_skills": [
             "CLEVER,1"
@@ -1917,7 +1918,7 @@
             "stat_skill": "s_c has discovered a trick to harvesting the bountiful, but foul, ragwort - using their claws to tear leaves from the plant, then carefully carrying them back to camp without chewing or salivating. It's difficult, but doable, if only just, and app1 is desperately grateful to learn the trick."
         },
         "fail_text": {
-            "unscathed_common": "Try as they might, p_l can't quite remember the exact shape of the ragwort leaves, and isn't going to harvest from plants they haven't confidently identified. Better safe than sorry, as they say."
+            "unscathed_common": "Try as they might, p_l can't quite remember the exact shape of the ragwort leaves, and {PRONOUN/p_l/subject} {VERB/p_l/are/is}n't going to harvest from plants {PRONOUN/p_l/subject} {VERB/p_l/have/has}n't confidently identified. Better safe than sorry, as they say."
         },
         "win_skills": [
             "CLEVER,1"
@@ -1944,7 +1945,7 @@
             "dislike",
             "respect"
         ],
-        "intro_text": "With newleaf bringing ragwort back on the medicinal menu, p_l heads out to find where the silly plants have decided to sprout this year. They describe ragwort to the warrior with them, though they'd be surprised if anyone manages to spot it.",
+        "intro_text": "With newleaf bringing ragwort back on the medicinal menu, p_l heads out to find where the silly plants have decided to sprout this year. They describe ragwort to the warriors with them, though they'd be surprised if anyone manages to spot it.",
         "decline_text": "They're stopped before they leave camp - these warriors are needed elsewhere. p_l's expedition will have to wait.",
         "chance_of_success": 30,
         "exp": 10,
@@ -1954,7 +1955,7 @@
             "stat_skill": "s_c has discovered a trick to harvesting the bountiful, but foul, ragwort - using their claws to tear leaves from the plant, then carefully carrying them back to camp without chewing or salivating. Some of the warriors are too impatient to follow their lead, and end up suffering the taste of ragwort as the patrol brings back loads of the leaves."
         },
         "fail_text": {
-            "unscathed_common": "Try as they might, p_l can't quite remember the exact shape of the ragwort leaves, and isn't going to harvest from plants they haven't confidently identified. Better safe than sorry, as they say."
+            "unscathed_common": "Try as they might, p_l can't quite remember the exact shape of the ragwort leaves, and {PRONOUN/p_l/subject} {VERB/p_l/are/is}n't going to harvest from plants {PRONOUN/p_l/subject} {VERB/p_l/have/has}n't confidently identified. Better safe than sorry, as they say."
         },
         "win_skills": [
             "CLEVER,1"
@@ -1986,7 +1987,7 @@
             "stat_skill": "Tansy might smell sharp enough to be enjoyed freshening up dens, but it sure tastes... interesting. s_c isn't sure they'll ever get used to it, but at least it's a reminder to be careful around the potentially poisonous herb."
         },
         "fail_text": {
-            "unscathed_common": "Try as they might, p_l can't quite remember the exact shape of the tansy leaves, and isn't going to harvest from plants they haven't confidently identified. Better safe than sorry, as they say."
+            "unscathed_common": "Try as they might, p_l can't quite remember the exact shape of the tansy leaves, and {PRONOUN/p_l/subject} {VERB/p_l/are/is}n't going to harvest from plants {PRONOUN/p_l/subject} {VERB/p_l/have/has}n't confidently identified. Better safe than sorry, as they say."
         },
         "win_skills": [
             "SENSE,2"
@@ -2026,7 +2027,7 @@
             "stat_skill": "Tansy might smell sharp enough to be enjoyed freshening up dens, but it sure tastes... interesting. s_c isn't sure they'll ever get used to it, but at least it's a reminder to be careful around the potentially poisonous herb, and app1 thankfully seems to be taking the appropriate amount of care harvesting it."
         },
         "fail_text": {
-            "unscathed_common": "Try as they might, p_l can't quite remember the exact shape of the tansy leaves, and isn't going to harvest from plants they haven't confidently identified. Better safe than sorry, as they say."
+            "unscathed_common": "Try as they might, p_l can't quite remember the exact shape of the tansy leaves, and {PRONOUN/p_l/subject} {VERB/p_l/are/is}n't going to harvest from plants {PRONOUN/p_l/subject} {VERB/p_l/have/has}n't confidently identified. Better safe than sorry, as they say."
         },
         "win_skills": [
             "SENSE,2"
@@ -2063,7 +2064,7 @@
             "stat_skill": "Tansy might smell sharp enough to be enjoyed freshening up dens, but it sure tastes... interesting. s_c isn't sure they'll ever get used to it, but at least it's a reminder to be careful around the potentially poisonous herb, which is extra helpful when gathering with their less-experienced Clanmates."
         },
         "fail_text": {
-            "unscathed_common": "Try as they might, p_l can't quite remember the exact shape of the tansy leaves, and isn't going to harvest from plants they haven't confidently identified. Better safe than sorry, as they say."
+            "unscathed_common": "Try as they might, p_l can't quite remember the exact shape of the tansy leaves, and {PRONOUN/p_l/subject} {VERB/p_l/are/is}n't going to harvest from plants {PRONOUN/p_l/subject} {VERB/p_l/have/has}n't confidently identified. Better safe than sorry, as they say."
         },
         "win_skills": [
             "SENSE,2"
@@ -2204,7 +2205,7 @@
             "stat_skill": "s_c, ever eagle-eyed, spots grass that looks suspiciously tall, with oddly thick blades. One sniff confirms it as wild garlic, and this patch has heaps to harvest."
         },
         "fail_text": {
-            "unscathed_common": "Try as they might, p_l can't quite remember the exact shape of the garlic leaves, and isn't going to harvest from plants they haven't confidently identified. Better safe than sorry, as they say."
+            "unscathed_common": "Try as they might, p_l can't quite remember the exact shape of the garlic leaves, and {PRONOUN/p_l/subject} {VERB/p_l/are/is}n't going to harvest from plants {PRONOUN/p_l/subject} {VERB/p_l/have/has}n't confidently identified. Better safe than sorry, as they say."
         },
         "win_skills": [
             "SENSE,2"
@@ -2244,7 +2245,7 @@
             "stat_skill": "s_c, ever eagle-eyed, spots grass that looks suspiciously tall, with oddly thick blades. One sniff confirms it as wild garlic, and this patch has heaps to harvest with app1."
         },
         "fail_text": {
-            "unscathed_common": "Try as they might, p_l can't quite remember the exact shape of the garlic leaves, and isn't going to harvest from plants they haven't confidently identified. Better safe than sorry, as they say."
+            "unscathed_common": "Try as they might, p_l can't quite remember the exact shape of the garlic leaves, and {PRONOUN/p_l/subject} {VERB/p_l/are/is}n't going to harvest from plants {PRONOUN/p_l/subject} {VERB/p_l/have/has}n't confidently identified. Better safe than sorry, as they say."
         },
         "win_skills": [
             "SENSE,2"
@@ -2281,7 +2282,7 @@
             "stat_skill": "s_c, ever eagle-eyed, spots grass that looks suspiciously tall, with oddly thick blades. One sniff confirms it as wild garlic, and the patch has heaps for their patrol to harvest."
         },
         "fail_text": {
-            "unscathed_common": "Try as they might, p_l can't quite remember the exact shape of the garlic leaves, and isn't going to harvest from plants they haven't confidently identified. Better safe than sorry, as they say."
+            "unscathed_common": "Try as they might, p_l can't quite remember the exact shape of the garlic leaves, and {PRONOUN/p_l/subject} {VERB/p_l/are/is}n't going to harvest from plants {PRONOUN/p_l/subject} {VERB/p_l/have/has}n't confidently identified. Better safe than sorry, as they say."
         },
         "win_skills": [
             "SENSE,2"

@@ -173,7 +173,6 @@ class GenerateEvents:
                         collateral_damage=event["collateral_damage"]
                     )
                     break
-                #print(event)
                 return event
 
     def possible_short_events(self, cat_type=None, age=None, event_type=None):
@@ -253,12 +252,15 @@ class GenerateEvents:
 
         return event_list
 
-    def filter_possible_short_events(self, possible_events, cat, other_cat, war, enemy_clan, other_clan, alive_kits, murder=False):
+    def filter_possible_short_events(self, possible_events, cat, other_cat, war, enemy_clan, other_clan, alive_kits, murder=False, murder_reveal=False):
         final_events = []
 
         minor = []
         major = []
         severe = []
+        
+        # Chance to bypass the skill or trait requirements. 
+        trait_skill_bypass = 15
 
         if war and random.randint(1, 10) != 1 and other_clan == enemy_clan:
             war_event = True
@@ -266,7 +268,11 @@ class GenerateEvents:
             war_event = False
 
         for event in possible_events:
-
+            
+            # Normally, there is a chance to bypass skill and trait requirments. 
+            # the "skill_trait_required" tags turns this off. Lets grab this tag once, for simplicity. 
+            prevent_bypass = "skill_trait_required" in event.tags
+            
             if war_event and ("war" not in event.tags and "hostile" not in event.tags):
                 continue
             if not war and "war" in event.tags:
@@ -285,6 +291,11 @@ class GenerateEvents:
             if murder and "murder" not in event.tags:
                 continue
             if not murder and "murder" in event.tags:
+                continue
+
+            if murder_reveal and "murder_reveal" not in event.tags:
+                continue
+            if not murder_reveal and "murder_reveal" in event.tags:
                 continue
 
             # make complete leader death less likely until the leader is over 150 moons
@@ -331,7 +342,7 @@ class GenerateEvents:
             elif "medicine_cat_app" in event.tags and cat.status != "medicine cat apprentice":
                 continue
 
-            # other clan related checks
+            # other Clan related checks
             if "other_clan" in event.tags:
                 if "war" in event.tags and not war:
                     continue
@@ -342,10 +353,17 @@ class GenerateEvents:
                 elif "hostile" in event.tags and int(other_clan.relations) > 7:
                     continue
 
-            # check if clan has kits
+            # check if Clan has kits
             if "clan_kits" in event.tags and not alive_kits:
                 continue
-
+            
+            if "adoption" in event.tags:
+                # If the cat or any of their mates have "no kits" toggled, forgo the adoption event.
+                if cat.no_kits:
+                    continue
+                if any(cat.fetch_cat(i).no_kits for i in cat.mate):
+                    continue
+            
             # check for old age
             if "old_age" in event.tags and cat.moons < 150:
                 continue
@@ -358,44 +376,44 @@ class GenerateEvents:
             if other_cat:
                 if "other_cat_leader" in event.tags and other_cat.status != "leader":
                     continue
-                elif "other_cat_dep" in event.tags and other_cat.status != "deputy":
+                if "other_cat_dep" in event.tags and other_cat.status != "deputy":
                     continue
-                elif "other_cat_med" in event.tags and other_cat.status != "medicine cat":
+                if "other_cat_med" in event.tags and other_cat.status != "medicine cat":
                     continue
-                elif "other_cat_med_app" in event.tags and other_cat.status != "medicine cat apprentice":
+                if "other_cat_med_app" in event.tags and other_cat.status != "medicine cat apprentice":
                     continue
-                elif "other_cat_warrior" in event.tags and other_cat.status != "warrior":
+                if "other_cat_warrior" in event.tags and other_cat.status != "warrior":
                     continue
-                elif "other_cat_app" in event.tags and other_cat.status != "apprentice":
+                if "other_cat_app" in event.tags and other_cat.status != "apprentice":
                     continue
-                elif "other_cat_elder" in event.tags and other_cat.status != "elder":
+                if "other_cat_elder" in event.tags and other_cat.status != "elder":
                     continue
-                elif "other_cat_adult" in event.tags and other_cat.age in ["elder", "kitten", "newborn"]:
+                if "other_cat_adult" in event.tags and other_cat.age in ["elder", "kitten", "newborn"]:
                     continue
-                elif "other_cat_kit" in event.tags and other_cat.status not in ['newborn', 'kitten']:
+                if "other_cat_kit" in event.tags and other_cat.status not in ['newborn', 'kitten']:
                     continue
 
                 if "other_cat_mate" in event.tags and other_cat.ID not in cat.mate:
                     continue
-                elif "other_cat_child" in event.tags and other_cat.ID not in cat.get_children():
+                if "other_cat_child" in event.tags and other_cat.ID not in cat.get_children():
                     continue
-                elif "other_cat_parent" in event.tags and other_cat.ID not in cat.get_parents():
+                if "other_cat_parent" in event.tags and other_cat.ID not in cat.get_parents():
                     continue
 
                 if "other_cat_own_app" in event.tags and other_cat.ID not in cat.apprentice:
                     continue
-                elif "other_cat_mentor" in event.tags and other_cat.ID != cat.mentor:
+                if "other_cat_mentor" in event.tags and other_cat.ID != cat.mentor:
                     continue
-
-                # check other_cat trait and skill
-                had_trait = False
+                
+                # check other cat trait and skill
+                has_trait = False
                 if event.other_cat_trait:
-                    if other_cat.personality.trait not in event.other_cat_trait and int(random.random() * 15):
-                        continue
-                    had_trait = True
-                if event.other_cat_skill and not had_trait:
-                    _flag = False
-                    for _skill in event.cat_skill:
+                    if other_cat.personality.trait in event.other_cat_trait:
+                        has_trait = True
+                
+                has_skill = False
+                if event.other_cat_skill:
+                    for _skill in event.other_cat_skill:
                         split = _skill.split(",")
                         
                         if len(split) < 2:
@@ -403,20 +421,30 @@ class GenerateEvents:
                             continue
                         
                         if other_cat.skills.meets_skill_requirement(split[0], int(split[1])):
-                            _flag = True
+                            has_skill = True
                             break
                     
-                    if not _flag and int(random.random() * 15):
+                # There is a small chance to bypass the skill or trait requirments.  
+                if event.other_cat_trait and event.other_cat_skill:
+                    if not (has_trait or has_skill) and (prevent_bypass or int(random.random() * trait_skill_bypass)):
+                        continue
+                elif event.other_cat_trait:
+                    if not has_trait and (prevent_bypass or int(random.random() * trait_skill_bypass)):
+                        continue
+                elif event.other_cat_skill:
+                    if not has_skill and (prevent_bypass or int(random.random() * trait_skill_bypass)):
                         continue
                 
-                had_trait = True
+                
+                # check cat negate trait and skill
+                has_trait = False
                 if event.other_cat_negate_trait:
-                    if other_cat.personality.trait in event.other_cat_negate_trait and int(random.random() * 15):
-                        continue
-                    had_trait = False
-                if event.other_cat_negate_skill and had_trait:
-                    _flag = False
-                    for _skill in event.cat_skill:
+                    if other_cat.personality.trait in event.other_cat_negate_trait:
+                        has_trait = True
+                
+                has_skill = False
+                if event.other_cat_negate_trait:
+                    for _skill in event.other_cat_negate_trait:
                         split = _skill.split(",")
                         
                         if len(split) < 2:
@@ -424,11 +452,12 @@ class GenerateEvents:
                             continue
                         
                         if other_cat.skills.meets_skill_requirement(split[0], int(split[1])):
-                            _flag = True
+                            has_skill = True
                             break
                     
-                    if _flag and int(random.random() * 15):
-                        continue
+                # There is a small chance to bypass the skill or trait requirments.  
+                if (has_trait or has_skill) and int(random.random() * trait_skill_bypass):
+                    continue
 
             else:
                 if "other_cat" in event.tags or "multi_death" in event.tags:
@@ -438,36 +467,17 @@ class GenerateEvents:
             if "mate" in event.tags and len(cat.mate) < 1:
                 continue
 
-            # check cat trait and skill
-            had_trait = False
-            if event.cat_trait:
-                if cat.personality.trait not in event.cat_trait and int(random.random() * 15):
-                    continue
-                had_trait = True
-            if event.cat_skill and not had_trait:
-                _flag = False
-                for _skill in event.cat_skill:
-                    split = _skill.split(",")
-                    
-                    if len(split) < 2:
-                        print("Cat skill incorrectly formatted", _skill)
-                        continue
-                    
-                    if cat.skills.meets_skill_requirement(split[0], int(split[1])):
-                        _flag = True
-                        break
-                
-                # If the cat doesn't have the skill, and some random chance, continue. 
-                if _flag and int(random.random() * 15):
-                    continue
 
-            had_trait = True
-            if event.cat_negate_trait:
-                if cat.personality.trait in event.cat_negate_trait and int(random.random() * 15):
-                    continue
-                had_trait = False
-            if event.cat_negate_skill and had_trait:
-                _flag = False
+            # check cat trait and skill
+            has_trait = False
+            if event.cat_trait:
+                if cat.personality.trait in event.cat_trait:
+                    has_trait = True
+            else:
+                has_trait = None
+            
+            has_skill = False
+            if event.cat_skill:
                 for _skill in event.cat_skill:
                     split = _skill.split(",")
                     
@@ -476,11 +486,43 @@ class GenerateEvents:
                         continue
                     
                     if cat.skills.meets_skill_requirement(split[0], int(split[1])):
-                        _flag = True
+                        has_skill = True
+                        break
+            
+            # There is a small chance to bypass the skill or trait requirments.  
+            if event.cat_trait and event.cat_skill:
+                if not (has_trait or has_skill) and (prevent_bypass or int(random.random() * trait_skill_bypass)):
+                    continue
+            elif event.cat_trait:
+                if not has_trait and (prevent_bypass or int(random.random() * trait_skill_bypass)):
+                    continue
+            elif event.cat_skill:
+                if not has_skill and (prevent_bypass or int(random.random() * trait_skill_bypass)):
+                    continue
+            
+            
+            # check cat negate trait and skill
+            has_trait = False
+            if event.cat_negate_trait:
+                if cat.personality.trait in event.cat_negate_trait:
+                    has_trait = True
+            
+            has_skill = False
+            if event.cat_negate_skill:
+                for _skill in event.cat_negate_skill:
+                    split = _skill.split(",")
+                    
+                    if len(split) < 2:
+                        print("Cat skill incorrectly formatted", _skill)
+                        continue
+                    
+                    if cat.skills.meets_skill_requirement(split[0], int(split[1])):
+                        has_skill = True
                         break
                 
-                if _flag and int(random.random() * 15):
-                    continue
+            # There is a small chance to bypass the skill or trait requirments.  
+            if (has_trait or has_skill) and int(random.random() * trait_skill_bypass):
+                continue
 
             # determine injury severity chance
             if event.injury:
@@ -510,7 +552,6 @@ class GenerateEvents:
                     final_events = major
                 else:
                     final_events = severe
-                #print(cat.status, severity_chosen[0])
 
         return final_events
 
@@ -653,7 +694,7 @@ Tagging Guidelines: (if you add more tags, please add guidelines for them here)
 
 "other_cat_own_app", "other_cat_mentor" < mark the other cat has having to be the m_c's mentor or app respectively
 
-"clan_kits" < clan must have kits for this event to appear
+"clan_kits" < Clan must have kits for this event to appear
 
 **Relationship tags do not work for New Cat events**
 mc_to_rc < change mc's relationship values towards rc

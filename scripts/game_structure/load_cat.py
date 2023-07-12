@@ -146,7 +146,6 @@ def json_load():
             if "skill_dict" in cat:
                 new_cat.skills = CatSkills(cat["skill_dict"])
             elif "skill" in cat:
-                print('skill in cat')
                 if new_cat.backstory is None:
                     if "skill" == 'formerly a loner':
                         backstory = choice(['loner1', 'loner2', 'rogue1', 'rogue2'])
@@ -176,7 +175,6 @@ def json_load():
             
             if "died_by" in cat or "scar_event" in cat or "mentor_influence" in cat:
                 new_cat.convert_history(
-                    cat["mentor_influence"] if "mentor_influence" in cat else [],
                     cat["died_by"] if "died_by" in cat else [],
                     cat["scar_event"] if "scar_event" in cat else []
                 )
@@ -217,38 +215,13 @@ def json_load():
             game.switches['error_message'] = f'There was an error loading relationships for cat #{cat}.'
             game.switches['traceback'] = e
             raise
-
-        # get all the siblings ids and save them
-        siblings = list(
-            filter(lambda inter_cat: cat.is_sibling(inter_cat), all_cats))
-        cat.siblings = [sibling.ID for sibling in siblings]
-
-        # Add faded siblings:
-        for parent in cat.get_parents():
-            try:
-                cat_ob = Cat.fetch_cat(parent)
-                cat.siblings.extend(cat_ob.faded_offspring)
-            except:
-                if parent == cat.parent1:
-                    cat.parent1 = None
-                elif parent == cat.parent2:
-                    cat.parent2 = None
-
-        # Remove duplicates
-        cat.siblings = list(set(cat.siblings))
-
-        # get all the children ids and save them
-        children = list(
-            filter(lambda inter_cat: cat.is_parent(inter_cat), all_cats))
-        cat.children = [child.ID for child in children]
-
-        # Add faded children
-        cat.children.extend(cat.faded_offspring)
+        
+        
+        cat.inheritance = Inheritance(cat)
         
         try:
             # initialization of thoughts
             cat.thoughts()
-            cat.inheritance = Inheritance(cat)
         except Exception as e:
             logger.exception(f'There was an error when thoughts for cat #{cat} are created.')
             game.switches['error_message'] = f'There was an error when thoughts for cat #{cat} are created.'
@@ -456,8 +429,10 @@ def csv_load(all_cats):
 
 
 def save_check():
-    """Checks through loaded cats, checks and attempts to fix issues """
-
+    """Checks through loaded cats, checks and attempts to fix issues 
+    NOT currently working. """
+    return
+    
     for cat in Cat.all_cats:
         cat_ob = Cat.all_cats[cat]
 
@@ -476,7 +451,7 @@ def save_check():
 def version_convert(version_info):
     """Does all save-conversion that require referencing the saved version number.
     This is a separate function, since the version info is stored in clan.json, but most conversion needs to be
-    done on the cats. Clan data is loaded in after cats, however. """
+    done on the cats. Clan data is loaded in after cats, however."""
 
     if version_info is None:
         return
@@ -486,8 +461,39 @@ def version_convert(version_info):
         return
 
     if version_info["version_name"] is None:
+        version = 0
+    else:
+        version = version_info["version_name"]
+
+    if version < 1:
         # Save was made before version number storage was implemented.
         # (ie, save file version 0)
         # This means the EXP must be adjusted. 
         for c in Cat.all_cats.values():
             c.experience = c.experience * 3.2
+            
+    if version < 2:
+        for c in Cat.all_cats.values():
+            for con in c.injuries:
+                moons_with = 0
+                if "moons_with" in c.injuries[con]:
+                    moons_with = c.injuries[con]["moons_with"]
+                    c.injuries[con].pop("moons_with")
+                c.injuries[con]["moon_start"] = game.clan.age - moons_with
+        
+            for con in c.illnesses:
+                moons_with = 0
+                if "moons_with" in c.illnesses[con]:
+                    moons_with = c.illnesses[con]["moons_with"]
+                    c.illnesses[con].pop("moons_with")
+                c.illnesses[con]["moon_start"] = game.clan.age - moons_with
+                
+            for con in c.permanent_condition:
+                moons_with = 0
+                if "moons_with" in c.permanent_condition[con]:
+                    moons_with = c.permanent_condition[con]["moons_with"]
+                    c.permanent_condition[con].pop("moons_with")
+                c.permanent_condition[con]["moon_start"] = game.clan.age - moons_with
+            
+        
+            

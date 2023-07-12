@@ -51,6 +51,7 @@ class SaveCheck(UIWindow):
                 scale(pygame.Rect((146, 310), (305, 60))),
                 "",
                 object_id="#main_menu_button",
+                starting_height=2,
                 container=self
             )
             self.message = f"Would you like to save your game before exiting to the Main Menu? If you don't, progress may be lost!"
@@ -59,6 +60,7 @@ class SaveCheck(UIWindow):
                 scale(pygame.Rect((146, 310), (305, 60))),
                 "",
                 object_id="#smallquit_button",
+                starting_height=2,
                 container=self
             )
             self.message = f"Would you like to save your game before exiting? If you don't, progress may be lost!"
@@ -196,7 +198,7 @@ class DeleteCheck(UIWindow):
                 elif os.path.exists(rempath + 'clan.txt'):
                     os.remove(rempath + "clan.txt")
                 else:
-                    print("No clan.json/txt???? clan prolly wasnt initalized kekw")
+                    print("No clan.json/txt???? Clan prolly wasnt initalized kekw")
                 self.kill()
                 self.reloadscreen('switch clan screen')
 
@@ -910,18 +912,18 @@ class RelationshipLog(UIWindow):
         for button in self.disable_button_list:
             button.disable()
 
-        if game.settings["fullscreen"]:
+        """if game.settings["fullscreen"]:
             img_path = "resources/images/spacer.png"
         else:
-            img_path = "resources/images/spacer_small.png"
+            img_path = "resources/images/spacer_small.png"""
 
         opposite_log_string = None
         if not relationship.opposite_relationship:
             relationship.link_relationship()
         if relationship.opposite_relationship and len(relationship.opposite_relationship.log) > 0:
-            opposite_log_string = f"{f'<br><img src={img_path}><br>'.join(relationship.opposite_relationship.log)}<br>"
+            opposite_log_string = f"{f'<br>-----------------------------<br>'.join(relationship.opposite_relationship.log)}<br>"
 
-        log_string = f"{f'<br><img src={img_path}><br>'.join(relationship.log)}<br>" if len(relationship.log) > 0 else\
+        log_string = f"{f'<br>-----------------------------<br>'.join(relationship.log)}<br>" if len(relationship.log) > 0 else\
             "There are no relationship logs."
         
         if not opposite_log_string:

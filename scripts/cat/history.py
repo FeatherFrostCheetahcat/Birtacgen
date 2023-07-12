@@ -1,7 +1,5 @@
 import random
 
-import ujson
-
 from scripts.game_structure.game_essentials import game
 from scripts.cat.skills import SkillPath
 
@@ -29,7 +27,15 @@ class History:
         self.scar_events = scar_events if scar_events else []
         self.murder = murder if murder else {}
 
-        """
+        # fix 'old' history save bugs
+        if type(self.mentor_influence["trait"]) is type(None):
+            self.mentor_influence["trait"] = {}
+        if type(self.mentor_influence["skill"]) is type(None):
+            self.mentor_influence["skill"] = {}
+        if "mentor" in self.mentor_influence:
+            del self.mentor_influence["mentor"]
+
+        """ 
         want save to look like
         {
         "beginning":{
@@ -233,7 +239,7 @@ class History:
                 SkillPath.CLIMBER: [ "climbing" ],
                 SkillPath.SWIMMER: [ "swimming" ],
                 SkillPath.SPEAKER: [ "arguing" ],
-                SkillPath.MEDIATOR: [ "resolving arugments" ],
+                SkillPath.MEDIATOR: [ "resolving arguments" ],
                 SkillPath.CLEVER: [ "solving problems" ],
                 SkillPath.INSIGHTFUL: [ "providing insight" ],
                 SkillPath.SENSE: [ "noticing small details" ],
@@ -253,7 +259,7 @@ class History:
         for _ment in cat.history.mentor_influence["skill"]:
             cat.history.mentor_influence["skill"][_ment]["strings"] = []
             for _path in cat.history.mentor_influence["skill"][_ment]:
-                #Check to make sure nothing weird got in there. 
+                #Check to make sure nothing weird got in there.
                 if _path == "strings":
                     continue
                 
@@ -262,11 +268,10 @@ class History:
                         cat.history.mentor_influence["skill"][_ment]["strings"].append(random.choice(skill_influence_text[SkillPath[_path]]))
                 except KeyError:
                     print("issue", _path)
-                    pass
 
     @staticmethod
     def add_facet_mentor_influence(cat, mentor_id, facet, amount):
-        """Adds the history infomation for a single mentor facet change, that occurs after a patrol. """
+        """Adds the history information for a single mentor facet change, that occurs after a patrol. """
         
         History.check_load(cat)
         if mentor_id not in cat.history.mentor_influence["trait"]:
@@ -277,6 +282,7 @@ class History:
     
     @staticmethod
     def add_skill_mentor_influence(cat, mentor_id, path, amount):
+        """ Adds mentor influence on skills """
         
         History.check_load(cat)
         
@@ -318,18 +324,28 @@ class History:
         """
         History.check_load(cat)
 
-        # Use a default is none is provided.
-        # Will probally sound weird, but it's better than nothing
-        if not death_text:
-            death_text = f"m_c died from an injury or illness ({condition})."
-        if not scar_text:
-            scar_text = f"m_c was scarred from an injury or illness ({condition})."        
-        
-        cat.history.possible_history[condition] = {
-            "death_text": death_text,
-            "scar_text": scar_text,
-            "other_cat": other_cat.ID if other_cat is not None else None
-        }
+        # If the condition already exists, we don't want to overwrite it
+        if condition in cat.history.possible_history:
+            if death_text is not None:
+                cat.history.possible_history[condition]["death_text"] = death_text
+            if scar_text is not None:
+                cat.history.possible_history[condition]["scar_text"] = scar_text
+            if other_cat is not None:
+                cat.history.possible_history[condition]["other_cat"] = other_cat.ID
+        else:
+            # Use a default is none is provided.
+            # Will probably sound weird, but it's better than nothing
+            if not death_text:
+                death_text = f"m_c died from an injury or illness ({condition})."
+            if not scar_text:
+                scar_text = f"m_c was scarred from an injury or illness ({condition})."
+            
+            cat.history.possible_history[condition] = {
+                "death_text": death_text,
+                "scar_text": scar_text,
+                "other_cat": other_cat.ID if other_cat is not None else None
+            }
+
 
     @staticmethod
     def remove_possible_history(cat, condition):
@@ -618,5 +634,31 @@ class History:
 
         return cat.history.murder
 
+    @staticmethod
+    def reveal_murder(cat, other_cat, Cat, victim, murder_index):
+        ''' Reveals the murder properly in all of the associated history text
+        :param cat: The murderer
+        :param other_cat: The cat who discovers the truth about the murder
+        :param Cat: The cat class
+        :param victim: The victim whose murder is being revealed
+        :param murder_index: Index of the murder'''
 
+        victim = Cat.fetch_cat(victim)
+        murder_history = History.get_murders(cat)
+        victim_history = History.get_murders(victim)
 
+        if murder_history:
+            if "is_murderer" in murder_history:
+                murder_history = murder_history["is_murderer"][murder_index]
+                murder_history["revealed"] = True
+                murder_history["revealed_by"] = other_cat.ID
+                murder_history["revelation_text"] = "The truth of {PRONOUN/m_c/subject} crime against [victim] was discovered by [discoverer]."
+
+                victim_history = victim_history["is_victim"][0]
+                victim_history["revealed"] = True
+                victim_history["revealed_by"] = other_cat.ID
+                victim_history["revelation_text"] = "The truth of {PRONOUN/m_c/subject} murder was discovered by [discoverer]."
+
+                murder_history["revelation_text"] = murder_history["revelation_text"].replace('[victim]', str(victim.name))
+                murder_history["revelation_text"] = murder_history["revelation_text"].replace('[discoverer]', str(other_cat.name))
+                victim_history["revelation_text"] = victim_history["revelation_text"].replace('[discoverer]', str(other_cat.name))

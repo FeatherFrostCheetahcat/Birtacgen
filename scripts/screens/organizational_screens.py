@@ -11,32 +11,29 @@ This file contains:
 
 """  # pylint: enable=line-too-long
 
+import logging
+import os
 import platform
 import subprocess
-import os
 import traceback
-import logging
 from html import escape
 
 import pygame
+import pygame_gui
+import ujson
+from requests.exceptions import RequestException, Timeout
 
-from .base_screens import Screens
-
-from requests.exceptions import ConnectionError, HTTPError
 from scripts.cat.cats import Cat
 from scripts.clan import Clan
-from scripts.game_structure.image_button import UIImageButton
-from scripts.utility import get_text_box_theme, scale, quit  # pylint: disable=redefined-builtin
-import pygame_gui
-from scripts.game_structure.game_essentials import game, screen, screen_x, screen_y, MANAGER
-from scripts.game_structure.windows import DeleteCheck, UpdateAvailablePopup, ChangelogPopup, SaveError
-from scripts.game_structure.discord_rpc import _DiscordRPC
 from scripts.game_structure import image_cache
+from scripts.game_structure.discord_rpc import _DiscordRPC
+from scripts.game_structure.game_essentials import game, screen, screen_x, screen_y, MANAGER
+from scripts.game_structure.image_button import UIImageButton
+from scripts.game_structure.windows import DeleteCheck, UpdateAvailablePopup, ChangelogPopup, SaveError
+from scripts.utility import get_text_box_theme, scale, quit  # pylint: disable=redefined-builtin
+from .base_screens import Screens
 from ..housekeeping.datadir import get_data_dir, get_cache_dir
 from ..housekeeping.update import has_update, UpdateChannel, get_latest_version_number
-
-import ujson
-
 from ..housekeeping.version import get_version_info
 
 logger = logging.getLogger(__name__)
@@ -266,8 +263,9 @@ class StartScreen(Screens):
 
             if update_available:
                 self.update_button.visible = 1
-        except (ConnectionError, HTTPError):
+        except (RequestException, Timeout):
             logger.exception("Failed to check for update")
+            has_checked_for_update = True
 
         if game.settings['show_changelog']:
             show_changelog = True
@@ -282,7 +280,7 @@ class StartScreen(Screens):
                 ChangelogPopup(game.switches['last_screen'])
 
         self.warning_label = pygame_gui.elements.UITextBox(
-            "Warning: this game includes some mild descriptions of gore.",
+            "Warning: this game includes some mild descriptions of gore, violence, and animal abuse",
             scale(pygame.Rect((100, 1244), (1400, 60))),
             object_id="#default_dark",
             manager=MANAGER)
@@ -414,7 +412,7 @@ class SwitchClanScreen(Screens):
                                        object_id="#main_menu_button",
                                        manager=MANAGER)
         self.info = pygame_gui.elements.UITextBox(
-            'Note: This will close the game.\n When you open it next, it should have the new clan.',
+            'Note: This will close the game.\n When you open it next, it should have the new Clan.',
             # pylint: disable=line-too-long
             scale(pygame.Rect((200, 1200), (1200, 140))),
             object_id=get_text_box_theme("#text_box_30_horizcenter"),
@@ -427,9 +425,9 @@ class SwitchClanScreen(Screens):
             manager=MANAGER)
         if game.clan:
             self.current_clan.set_text(
-                f"The currently loaded clan is {game.clan.name}Clan")
+                f"The currently loaded Clan is {game.clan.name}Clan")
         else:
-            self.current_clan.set_text("There is no clan currently loaded.")
+            self.current_clan.set_text("There is no Clan currently loaded.")
 
         self.clan_list = game.read_clans()
 
@@ -882,7 +880,7 @@ class SettingsScreen(Screens):
 
         self.checkboxes_text['info_text_box'] = pygame_gui.elements.UITextBox(
             self.info_text,
-            scale(pygame.Rect((0, 0), (1200, 8000))),
+            scale(pygame.Rect((0, 0), (1150, 8000))),
             object_id=get_text_box_theme("#text_box_30_horizcenter"),
             container=self.checkboxes_text["info_container"],
             manager=MANAGER)
@@ -899,6 +897,7 @@ class SettingsScreen(Screens):
                     object_id="#blank_button",
                     container=self.checkboxes_text["info_container"],
                     manager=MANAGER,
+                    starting_height=2
                 ),
             else:
                 self.tooltip[f'tip{i}'] = UIImageButton(
@@ -907,12 +906,13 @@ class SettingsScreen(Screens):
                     object_id="#blank_button",
                     container=self.checkboxes_text["info_container"],
                     manager=MANAGER,
-                    tool_tip_text=tooltip
+                    tool_tip_text=tooltip,
+                    starting_height=2
                 ),
 
             i += 1
         self.checkboxes_text["info_container"].set_scrollable_area_dimensions(
-            (1150 / 1600 * screen_x, 4300 / 1400 * screen_y))
+            (1150 / 1600 * screen_x, (i * 56 + y_pos + 550) / 1400 * screen_y))
 
     def open_lang_settings(self):
         """Open Language Settings"""
@@ -1015,6 +1015,7 @@ class StatsScreen(Screens):
         """
         TODO: DOCS
         """
+        
         self.set_disabled_menu_buttons(["stats"])
         self.show_menu_buttons()
         self.update_heading_text(f'{game.clan.name}Clan')

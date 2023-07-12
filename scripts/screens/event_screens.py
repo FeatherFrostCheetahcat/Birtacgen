@@ -443,7 +443,7 @@ class EventsScreen(Screens):
                                                             "resources/images/event_page_frame.png").convert_alpha()
                                                         , manager=MANAGER)
         self.events_frame.disable()
-        # Set text for clan age
+        # Set text for Clan age
         if game.clan.age == 1:
             self.clan_age.set_text(f'Clan age: {game.clan.age} moon')
         if game.clan.age != 1:
@@ -634,7 +634,7 @@ class EventsScreen(Screens):
         self.event_container.kill()
         self.make_events_container()
 
-        # Stop if clan is new, so that events from previously loaded clan don't show up
+        # Stop if Clan is new, so that events from previously loaded Clan don't show up
         if game.clan.age == 0:
             return
 
@@ -729,7 +729,8 @@ class EventsScreen(Screens):
                                                    pressed_button_pos[1] + 4),
                                                    (232/1600 * screen_x, 60/1400 * screen_y)),
                                       text=name, ids=ev, container=self.event_container,
-                                      object_id="#events_cat_profile_button", manager=MANAGER))
+                                      object_id="#events_cat_profile_button", layer_starting_height=2, 
+                                      manager=MANAGER))
                     # There is only room for about four buttons.
                     if i > 3:
                         break

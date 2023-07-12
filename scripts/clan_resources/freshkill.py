@@ -1,5 +1,6 @@
 from scripts.utility import get_alive_clan_queens
 from scripts.cat.cats import Cat
+from scripts.cat.skills import SkillPath
 from scripts.game_structure.game_essentials import game
 from copy import deepcopy
 import random
@@ -117,8 +118,8 @@ class Freshkill_Pile():
         for key, value in self.pile.items():
             self.pile[key] = previous_amount
             previous_amount = value
-            #if key == "expires_in_1":
-                #print(f" -- FRESHKILL: {value} expired prey is removed")
+            if key == "expires_in_1" and FRESHKILL_ACTIVE:
+                print(f" -- FRESHKILL: {value} expired prey is removed")
         self.total_amount = sum(self.pile.values())
 
         self.feed_cats(living_cats)
@@ -168,7 +169,7 @@ class Freshkill_Pile():
             Returns
             -------
             needed_prey : int|float
-                the amount of prey the clan needs
+                the amount of prey the Clan needs
         """
         living_cats = [i for i in Cat.all_cats.values() if not (i.dead or i.outside or i.exiled)]
         sick_cats = [cat for cat in living_cats if cat.is_injured() or cat.is_ill()]
@@ -216,11 +217,11 @@ class Freshkill_Pile():
 
         elif tactic == "hunter_first":
             ranking = {
-                "fantastic hunter": 0,
-                "great hunter": 1,
-                "good hunter": 2,
+                3: 0, # Tier 3 hunters get rank 0
+                2: 1, # Tier 2 hunters get rank 1
+                1: 2, # Tier 1 hunters get rank 2
             }
-            sorted_group = sorted(group, key=lambda x: ranking[x.skill] if x.skill in ranking else 3)
+            sorted_group = sorted(group, key=lambda x: ranking[x.skills.primary.tier] if x.skills.primary.path == SkillPath.HUNTER else ranking[x.skills.secondary.tier] if x.skills.secondary and x.skills.secondary.path == SkillPath.HUNTER else 3)
             self.feed_group(sorted_group, status_)
 
         else:
