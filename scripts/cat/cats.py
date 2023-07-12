@@ -430,10 +430,14 @@ class Cat():
             elif game.clan.leader_lives <= 0:
                 self.dead = True
                 game.clan.leader_lives = 0
+                self.thought = 'Is surprised to find themselves in a Wispy form.'
                 if game.clan.instructor.df is False:
+                    text = 'They\'ve lost their life and have become a Wisp.'
                 else:
+                    text = 'They\'ve has lost their life and have become a Wisp.'
         else:
             self.dead = True
+            self.thought = 'Is surprised to find themselves as a Wisp.'
 
         # Clear Relationships. 
         self.relationships = {}

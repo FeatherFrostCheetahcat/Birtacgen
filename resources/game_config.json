@@ -216,12 +216,19 @@
 		"cat_amount_welcoming": 3
 	},
 	"pregnancy": {
+		"birth_cooldown": 1,
+		"primary_chance_mated": 20,
 		"primary_chance_unmated": 130,
 		"random_affair_chance": 50,
 		"unmated_random_affair_chance": 10,
 		"one_kit_possibility": {"young adult": 8, "adult": 9, "senior adult": 10, "senior": 4},
         "two_kit_possibility": {"young adult": 10, "adult": 13, "senior adult": 15, "senior": 3},
+        "three_kit_possibility": {"young adult": 17, "adult": 15, "senior adult": 5, "senior": 1},
+				"four_kit_possibility": {"young adult": 0, "adult": 0, "senior adult": 0, "senior": 0},
+				"five_kit_possibility": {"young adult": 0, "adult": 0, "senior adult": 0, "senior": 0},
+				"max_kit_possibility": {"young adult": 0, "adult": 0, "senior adult": 0, "senior": 0},
 		"min_kits": 1,
+		"max_kits": 6,
 		"comment": [
 			"primary mated - 1/chance for kits, relationship and other factors will influence this chance",
 			"primary unmated - 1/chance for kits, relationship and other factors will influence this chance",
@@ -234,6 +241,8 @@
 		"base_permanent_condition": 90,
 		"base_male_tortie": 13,
 		"base_female_tortie": 4,
+		"base_heterochromia": 80,
+		"direct_inheritance": 5,
 		"wildcard_tortie": 9,
 		"vit_chance": 10,
 		"random_point_chance": 6
@@ -275,7 +284,12 @@
 	},
 	"cat_ages": {
 		"newborn": [0, 0],
+		"kitten": [1, 2],
+		"adolescent": [3, 11],
 		"young adult": [12, 47],
+        "adult": [48, 96],
+        "senior adult": [97, 119],
+        "senior": [120, 144],
 		"comment": [
 			"These HAVE to be in the correct order: where one ends, the next one begins on the next number.",
 			"If you DON'T DO THIS, your game WILL break."
@@ -300,12 +314,17 @@
 		]
 	},
 	"death_related": {
+		"leader_death_chance": 500,
+		"old_age_death_start": 97,
 		"old_age_death_chance": 51,
 		"classic_death_chance": 500,
 		"expanded_death_chance": 350,
 		"cruel season_death_chance": 300,
 		"war_death_modifier_leader": 95,
 		"war_death_modifier": 250,
+		"base_random_murder_chance": 300,
+		"base_murder_kill_chance": 300
+
 	},
 	"condition_related": {
 		"expanded_illness_chance": 250,
@@ -317,13 +336,18 @@
 		"war_injury_modifier": 100
 	},
 	"clan_creation": {
+		"rerolls": -1,
 		"comment": "Set this to -1 for it to be infinite"
 	},
 	"graduation": {
 		"base_app_timeskip_ex": [[3, 12],[5, 6]],
 		"base_med_app_timeskip_ex": [[2, 7],[2, 3]],
 		"max_apprentice_age": {
+			"medicine cat apprentice": 18,
+			"apprentice": 18,
+			"mediator apprentice": 18
 		},
+		"min_graduating_age": 11
 	},
 	"save_load": {
 		"load_integrity_checks": true

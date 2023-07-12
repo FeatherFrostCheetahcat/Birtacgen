@@ -30,10 +30,12 @@ class Pelt():
     
     # ATTRIBUTES, including non-pelt related
     pelt_colours = [
+        'WHITE', 'PALEGREY', 'SILVER', 'GREY', 'DARKGREY', 'GHOST', 'CREAM', 'PALEGINGER',
         'GOLDEN', 'GINGER', 'DARKGINGER', 'SIENNA', 'LIGHTBROWN', 'LILAC', 'BROWN', 'GOLDEN-BROWN', 'DARKBROWN',
         'CHOCOLATE'
     ]
     pelt_c_no_white = [
+        'PALEGREY', 'SILVER', 'GREY', 'DARKGREY', 'GHOST', 'CREAM', 'PALEGINGER',
         'GOLDEN', 'GINGER', 'DARKGINGER', 'SIENNA', 'LIGHTBROWN', 'LILAC', 'BROWN', 'GOLDEN-BROWN', 'DARKBROWN',
         'CHOCOLATE'
     ]
@@ -93,10 +95,12 @@ class Pelt():
 
     # SPRITE NAMES
     single_colours = [
+        'WHITE', 'PALEGREY', 'SILVER', 'GREY', 'DARKGREY', 'GHOST', 'CREAM', 'PALEGINGER',
         'GOLDEN', 'GINGER', 'DARKGINGER', 'SIENNA', 'LIGHTBROWN', 'LILAC', 'BROWN', 'GOLDEN-BROWN', 'DARKBROWN',
         'CHOCOLATE'
     ]
     ginger_colours = ['CREAM', 'PALEGINGER', 'GOLDEN', 'GINGER', 'DARKGINGER', 'SIENNA']
+    black_colours = ['GREY', 'DARKGREY', 'GHOST']
     white_colours = ['WHITE', 'PALEGREY', 'SILVER']
     brown_colours = ['LIGHTBROWN', 'LILAC', 'BROWN', 'GOLDEN-BROWN', 'DARKBROWN', 'CHOCOLATE']
     colour_categories = [ginger_colours, black_colours, white_colours, brown_colours]
@@ -920,18 +924,57 @@ class Pelt():
         # Define look-up dictionaries
         if short:
             renamed_colors = {
+             "white": "white",
+                "palegrey": "blue",
+                "silver": "blue",
                 "grey": "gray",
+                "darkgrey": "purple",
+                "ghost": "plum",
+                "paleginger": "brown",
+                "ginger": "red",
+                "darkginger": "yellow",
+                "sienna": "gray",
+                "lightbrown": "gold",
+                "lilac": "lime",
+                "brown": "green",
+                "golden-brown": "dark",
+                "darkbrown": "magenta",
+                "chocolate": "magenta",
+                "golden": "red"
             }
         else:
             renamed_colors = {
+                "white": "white",
+                "palegrey": "blue",
+                "silver": "dark blue",
                 "grey": "gray",
+                "darkgrey": "purple",
+                "ghost": "plum",
+                "paleginger": "brown",
+                "ginger": "dark red",
+                "darkginger": "yellow",
+                "sienna": "dark gray",
+                "lightbrown": "gold",
+                "lilac": "lime",
+                "brown": "green",
+                "golden-brown": "black",
+                "darkbrown": "dark magenta",
+                "chocolate": "magenta",
+                "golden": "red"
             }
 
         pattern_des = {
+            "Tabby": "c_n dark-striped",
+            "Speckled": "dark-spotted c_n",
             "Bengal": "unusually dappled c_n",
+            "Marbled": "c_n spotted & striped",
+            "Ticked": "c_n light-spotted",
             "Smoke": "c_n smoke",
+            "Mackerel": "c_n light-striped",
             "Classic": "c_n tabby",
             "Agouti": "c_n tabby",
+            "Singlestripe": "one-striped c_n",
+            "Rosette": "mixed-spots c_n",
             "Sokoke": "c_n tabby"
         }
 
@@ -1007,6 +1050,7 @@ class Pelt():
             scar_details = {
                 "NOTAIL": "no tail", 
                 "HALFTAIL": "half a tail", 
+                "NOPAW": "half a wing", 
                 "NOLEFTEAR": "a missing ear", 
                 "NORIGHTEAR": "a missing ear",
                 "NOEAR": "no ears"

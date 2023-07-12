@@ -437,6 +437,7 @@ class Clan():
             if self.leader:
                 self.leader.status_change('leader')
                 self.clan_cats.append(self.leader.ID)
+            self.leader_lives = 1
             self.leader_predecessors = 0
             self.deputy = deputy
             if deputy is not None:

@@ -1883,4 +1883,41 @@
     "min_cats": 1,
     "max_cats": 3
   },
+  {
+    "patrol_id": "mtn_hunt_deer",
+    "biome": "forest",
+    "season": "Any",
+    "tags": [
+      "hunting",
+      "large_prey2",
+      "large_prey3",
+      "no_fail_prey"
+    ],
+    "intro_text": "The patrol sees a deer herd nearby. A deer would be a lot to eat.",
+    "decline_text": "They decide that hunting the deer might be too dangerous. Maybe they just don't need to risk it yet.",
+    "chance_of_success": 70,
+    "exp": 20,
+    "success_text": {
+      "unscathed_common": "They luckily manage to take down the deer before it has the chance of injuring them!",
+      "scar": "While they do manage to take down the deer, r_c is left with a scar.",
+      "stat_skill": "s_c leads the hunt & they manage to get a deer away from the herd & take it down!",
+      "injury": "While they do manage to take down the deer, r_c is left heavily injured from the deer."
+    },
+    "fail_text": {
+      "unscathed_rare": "The deer manages to get back into the safety of the herd before they can catch it.",
+      "scar": "r_c gets hit by a deer's antlers, but luckily only ends up with a scar.",
+      "injury": "r_c gets trampled by the deer's hooves & ends up heavily injured!",
+      "death": "r_c gets hit by the deer's antlers, then trampled over. Sadly, they end up dead. The rest of the patrol might not ever hunt deer again. At least, not soon."
+    },
+    "win_skills": [
+      "HUNTER,2",
+      "HUNTER, 3",
+      "FIGHTER, 2",
+      "FIGHTER, 3",
+      "CLEVER, 2",
+      "CLEVER, 3"
+    ],
+    "min_cats": 4,
+    "max_cats": 6
+  }
 ]

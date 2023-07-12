@@ -1116,10 +1116,6 @@
         "min_cats": 1,
         "max_cats": 1,
         "antagonize_text": null,
-        "antagonize_fail_text": null,
-        "history_text": {
-            "reg_death": "r_c froze to death."
-        }
         "antagonize_fail_text": null
     },
     {
